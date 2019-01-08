@@ -5,16 +5,12 @@ const cache: {
   [path: string]: Promise<Chunk>;
 } = {};
 
-function cached(path: string) {
-  return path in cache;
-}
-
 const cacheChunk: IBeforeStartedHook = (path: string, _name: string, prevChunk?: Promise<Chunk>) => {
   if (prevChunk) {
     return prevChunk;
   }
 
-  if (cached(path)) {
+  if (path in cache) {
     return cache[path];
   }
 

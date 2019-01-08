@@ -1,12 +1,9 @@
 var cache = {};
-function cached(path) {
-    return path in cache;
-}
 var cacheChunk = function (path, _name, prevChunk) {
     if (prevChunk) {
         return prevChunk;
     }
-    if (cached(path)) {
+    if (path in cache) {
         return cache[path];
     }
     return undefined;
