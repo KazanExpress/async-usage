@@ -1,0 +1,100 @@
+{
+  "name": "async-usage",
+  "version": "0.0.0",
+  "keywords": [
+    "async",
+    "import",
+    "component",
+    "flexible",
+    "TS",
+    "JS",
+    "React",
+    "Vue",
+    "Vue.js",
+    "Angular.js",
+    "Angular"
+  ],
+  "main": "dist/es5/index.js",
+  "module": "dist/es6/index.js",
+  "esnext": "dist/esnext/index.js",
+  "next": "dist/esnext/index.js",
+  "typings": "dist/types",
+  "files": [
+    "src",
+    "index.ts",
+    "dist"
+  ],
+  "description": "Declarative async imports for everyone!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KazanExpress/async-usage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KazanExpress/async-usage/issues"
+  },
+  "homepage": "https://github.com/KazanExpress/async-usage#readme",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "author": "Raiondesu <a.raiondesu@gmail.com>",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build:es6": "tsc",
+    "build:es5": "tsc -p ./tsconfig.es5.json",
+    "build:esnext": "tsc -p ./tsconfig.esnext.json",
+    "build": "npm run build:es6 && npm run build:es5 && npm run build:esnext",
+    "start": "tsc --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:prod": "npm run test -- --coverage --no-cache",
+    "coverage": "cat ./coverage/lcov.info | coveralls",
+    "preversion": "npm run test:prod && npm run build && (git diff --quiet && git diff --staged --quiet || git commit -am 'tests-and-build.')",
+    "patch": "npm version patch && npm publish && git push",
+    "minor": "npm version minor && npm publish && git push",
+    "major": "npm version major && npm publish && git push"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/",
+      "/dist/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "collectCoverage": true
+  },
+  "devDependencies": {
+    "@types/jest": "^22.0.0",
+    "@types/node": "^10.0.3",
+    "@types/rollup-plugin-json": "^3.0.1",
+    "colors": "^1.1.2",
+    "coveralls": "^3.0.0",
+    "jest": "^22.0.2",
+    "rimraf": "^2.6.1",
+    "ts-jest": "^22.0.0",
+    "ts-node": "^6.0.0",
+    "tslint": "^5.12.0",
+    "typescript": "^3.0.0"
+  }
+}
