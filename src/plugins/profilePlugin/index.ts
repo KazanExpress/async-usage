@@ -1,6 +1,6 @@
 import { profileChunk } from './profileChunk';
 import { IChunkPlugin } from '..';
-import { Chunk } from '../../types';
+import { Chunk } from 'types';
 
 interface ILoads {
   [path: string]: ReturnType<typeof profileChunk>;
