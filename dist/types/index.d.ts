@@ -46,4 +46,4 @@ export interface IAsyncDefaultUsageOptions extends IAsyncUsageOptions {
 }
 export declare const defaultOptions: IAsyncDefaultUsageOptions;
 export declare function createAsyncUsage(importFactory: ImportFactory, options?: IAsyncUsageOptions): UseChunksFunction;
-export { chunkImporterFactoryGenerator };
+export { chunkImporterFactoryGenerator as generateChunkImporter };

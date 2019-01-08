@@ -20,5 +20,5 @@ export function createAsyncUsage(importFactory, options) {
         return chunks;
     };
 }
-export { chunkImporterFactoryGenerator };
+export { chunkImporterFactoryGenerator as generateChunkImporter };
 //# sourceMappingURL=index.js.map

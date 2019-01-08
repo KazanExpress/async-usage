@@ -6,7 +6,7 @@ var invokePlugins = function (methods, args, initial) { return methods.reduce(fu
         return res;
     }
 }, initial); };
-var isUndef = function (v) { return typeof v === 'undefined'; };
+var isDef = function (v) { return typeof v !== 'undefined'; };
 export function chunkGeneratorFactory(importFactory, plugins) {
     var pluginsMap = plugins.reduce(function (acc, pl) {
         for (var key in acc) {
@@ -25,21 +25,21 @@ export function chunkGeneratorFactory(importFactory, plugins) {
     return function generateChunk(name) {
         return function generate(path) {
             var invokedResult = invokePlugins(pluginsMap.invoked, [path, name], undefined);
-            return !isUndef(invokedResult) ? function () { return invokedResult; } : function () {
+            return isDef(invokedResult) ? function () { return invokedResult; } : function () {
                 var beforeStartResult = invokePlugins(pluginsMap.beforeStart, [path, name], undefined);
-                if (!isUndef(beforeStartResult)) {
+                if (isDef(beforeStartResult)) {
                     return Promise.resolve(beforeStartResult);
                 }
                 var promise = importFactory(path);
                 var startedResult = invokePlugins(pluginsMap.started, [path, name, promise], undefined);
-                if (!isUndef(startedResult)) {
+                if (isDef(startedResult)) {
                     return Promise.resolve(startedResult);
                 }
                 return promise.then(function (chunk) {
                     return invokePlugins(pluginsMap.resolved, [path, name, chunk], chunk);
                 }).catch(function (e) {
                     var rejectedRes = invokePlugins(pluginsMap.rejected, [path, name, e], undefined);
-                    if (!isUndef(rejectedRes)) {
+                    if (isDef(rejectedRes)) {
                         return rejectedRes;
                     }
                     else {

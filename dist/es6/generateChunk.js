@@ -6,7 +6,7 @@ const invokePlugins = (methods, args, initial) => methods.reduce((res, plugin) =
         return res;
     }
 }, initial);
-const isUndef = (v) => typeof v === 'undefined';
+const isDef = (v) => typeof v !== 'undefined';
 export function chunkGeneratorFactory(importFactory, plugins) {
     const pluginsMap = plugins.reduce((acc, pl) => {
         for (const key in acc) {
@@ -25,19 +25,19 @@ export function chunkGeneratorFactory(importFactory, plugins) {
     return function generateChunk(name) {
         return function generate(path) {
             const invokedResult = invokePlugins(pluginsMap.invoked, [path, name], undefined);
-            return !isUndef(invokedResult) ? () => invokedResult : function () {
+            return isDef(invokedResult) ? () => invokedResult : function () {
                 const beforeStartResult = invokePlugins(pluginsMap.beforeStart, [path, name], undefined);
-                if (!isUndef(beforeStartResult)) {
+                if (isDef(beforeStartResult)) {
                     return Promise.resolve(beforeStartResult);
                 }
                 const promise = importFactory(path);
                 const startedResult = invokePlugins(pluginsMap.started, [path, name, promise], undefined);
-                if (!isUndef(startedResult)) {
+                if (isDef(startedResult)) {
                     return Promise.resolve(startedResult);
                 }
                 return promise.then(chunk => invokePlugins(pluginsMap.resolved, [path, name, chunk], chunk)).catch(e => {
                     const rejectedRes = invokePlugins(pluginsMap.rejected, [path, name, e], undefined);
-                    if (!isUndef(rejectedRes)) {
+                    if (isDef(rejectedRes)) {
                         return rejectedRes;
                     }
                     else {
