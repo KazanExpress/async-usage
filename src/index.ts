@@ -51,11 +51,7 @@ export interface IAsyncUsageOptions {
   plugins?: IChunkPlugin[];
 }
 
-export interface IAsyncDefaultUsageOptions extends IAsyncUsageOptions {
-  plugins: IChunkPlugin[];
-}
-
-export const defaultOptions: IAsyncDefaultUsageOptions = {
+export const defaultOptions: IAsyncUsageOptions = {
   basePath: '',
   plugins: []
 };
@@ -64,13 +60,12 @@ export function createAsyncUsage(importFactory: ImportFactory, options?: IAsyncU
   const {
     basePath,
     plugins
-  } = options ? { ...defaultOptions, ...options } : defaultOptions;
-
+  } = options || defaultOptions;
 
   const cif = chunkImporterFactoryGenerator(
     importFactory,
     basePath,
-    plugins
+    plugins || []
   );
 
   const factoryAliases = ['and', 'with'];
@@ -82,17 +77,19 @@ export function createAsyncUsage(importFactory: ImportFactory, options?: IAsyncU
       relativePath
     );
 
-    const factory = (cm: ChunkImportMap | ChunkImportArray, rp?: string) => use({
+    const factory = (cm: ChunkImportMap | ChunkImportArray, rp?: string) => ({
       ...chunks,
-      ...useChunks(cif, cm, rp)
-    }, rp);
+      ...use(cm, rp)
+    });
 
     factoryAliases.forEach(al => chunks[al] = factory);
 
-    chunks.clean = function (this: ExtendedUseChunks) {
+    chunks.clean = function (this: ExtendedUseChunks): ChunkImportPromiseMap {
       for (const alias of factoryAliases) {
         delete this[alias];
       }
+
+      return this;
     }.bind(chunks);
 
     return chunks;
