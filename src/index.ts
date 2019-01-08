@@ -1,49 +1,29 @@
 import { useChunks } from './useChunks';
-import { chunkImporterFactoryGenerator } from './chunkFactory';
+import { chunkImporterFactory } from './chunkFactory';
+import { IChunkPlugin, isStr } from './plugins';
+import { ChunkImportMap, ChunkImportPromiseMap, ChunkImportArray, ChunkImportOptions, ImportFactory } from './types';
 
-export type Chunk =  {
-  [key: string]: any;
-  default?: any;
-  __esModule?: boolean;
+export type ChunksUse = {
+  <M extends ChunkImportMap>(ChunksMap: M): ExtendedChunksMap<keyof M>;
+  <M extends ChunkImportMap>(ChunksMap: M): ChunkImportPromiseMap<keyof M>;
+  <M extends ChunkImportMap>(ChunksMap: M, relativePath: string): ExtendedChunksMap<keyof M>;
+  <M extends ChunkImportMap>(ChunksMap: M, relativePath: string): ChunkImportPromiseMap<keyof M>;
+  (ChunksMap: ChunkImportArray): ExtendedChunksMap;
+  (ChunksMap: ChunkImportArray): ChunkImportPromiseMap;
+  (ChunksMap: ChunkImportArray, relativePath: string): ExtendedChunksMap;
+  (ChunksMap: ChunkImportArray, relativePath: string): ChunkImportPromiseMap;
 };
 
-export type ChunkImportPromise = () => Promise<any>;
-export type ChunkImporter = (path: string, relativePathFromRoot?: string) => ChunkImportPromise;
-export type ChunkImportMap = { [name: string]: string | ChunkImportPromise };
-export type ChunkMapImporter = (map: ChunkImportMap, relativePathFromRoot?: string) => ChunkImportPromiseMap;
-export type ChunkImportArray = Array<string | ChunkImportMap>;
-export type ChunkMapOrArrayImporter = (map: ChunkImportArray, relativePathFromRoot?: string) => ChunkImportPromiseMap;
-
-export type UseChunksFunction = {
-  (ChunksMap: ChunkImportArray | ChunkImportMap): ExtendedUseChunks;
-  (ChunksMap: ChunkImportArray | ChunkImportMap): ChunkImportPromiseMap;
-  (ChunksMap: ChunkImportArray | ChunkImportMap, relativePath: string): ExtendedUseChunks;
-  (ChunksMap: ChunkImportArray | ChunkImportMap, relativePath: string): ChunkImportPromiseMap;
+export type FormattedChunksUse<R> = {
+  (ChunksMap: ChunkImportOptions): R;
+  (ChunksMap: ChunkImportOptions, relativePath: string): R;
 };
 
-export type ChunkImportPromiseMap = {
-  [name: string]: ChunkImportPromise;
-};
-
-export type ExtendedUse<R = ChunkImportPromiseMap> = {
-  [alias in 'and' | 'with']: UseChunksFunction;
+export type ExtendedChunksMap<Keys extends PropertyKey = string> = ChunkImportPromiseMap<Keys> & {
+  [alias in 'and' | 'with']: ChunksUse;
 } & {
-  clean(): R;
+  clean(): ChunkImportPromiseMap<Keys>;
 };
-
-export type ExtendedUseChunks = {
-  [name: string]: ChunkImportPromise;
-} & ExtendedUse;
-
-export type ImportFactory = (path: string) => Promise<Chunk>;
-
-export interface IChunkPlugin {
-  invoked?: (path: string, name: string, prevChunk?: Promise<Chunk>) => Promise<Chunk> | undefined;
-  beforeStart?: (path: string, name: string, prevChunk?: Promise<Chunk>) => Promise<Chunk> | undefined;
-  started?: (path: string, name: string, newChunk: Promise<Chunk>) => Promise<Chunk> | undefined;
-  resolved?: ((path: string, name: string, value: Chunk) => Chunk | PromiseLike<Chunk>);
-  rejected?: ((path: string, name: string, reason: any) => Chunk | PromiseLike<Chunk> | undefined);
-}
 
 export interface IAsyncUsageOptions {
   basePath: string;
@@ -51,51 +31,57 @@ export interface IAsyncUsageOptions {
   plugins?: IChunkPlugin[];
 }
 
-export const defaultOptions: IAsyncUsageOptions = {
-  basePath: '',
-  plugins: []
-};
-
-export function createAsyncUsage(importFactory: ImportFactory, options?: IAsyncUsageOptions): UseChunksFunction {
+export function createAsyncUsage(
+  importFactory: ImportFactory,
+  options: IAsyncUsageOptions | string = ''
+): ChunksUse {
   const {
     basePath,
     plugins
-  } = options || defaultOptions;
+  } = isStr(options) ? { basePath: options, plugins: [] } : options;
 
-  const cif = chunkImporterFactoryGenerator(
+  const cif = chunkImporterFactory(
     importFactory,
     basePath,
-    plugins || []
+    plugins
   );
 
-  const factoryAliases = ['and', 'with'];
-
-  return function use(chunkMap: ChunkImportArray | ChunkImportMap, relativePath?: string) {
-    const chunks: any = useChunks(
+  function use(chunkMap: ChunkImportOptions, relativePath?: string): ExtendedChunksMap {
+    const chunks = useChunks(
       cif,
       chunkMap,
       relativePath
     );
 
-    const factory = (cm: ChunkImportMap | ChunkImportArray, rp?: string) => ({
+    const factory: ChunksUse = (cm: ChunkImportOptions, rp?: string) => ({
       ...chunks,
       ...use(cm, rp)
     });
 
-    factoryAliases.forEach(al => chunks[al] = factory);
+    const aliased = {
+      and: factory,
+      with: factory,
+      clean: () => chunks
+    };
 
-    chunks.clean = function (this: ExtendedUseChunks): ChunkImportPromiseMap {
-      for (const alias of factoryAliases) {
-        delete this[alias];
-      }
+    return { ...aliased, ...chunks } as ExtendedChunksMap;
+  }
 
-      return this;
-    }.bind(chunks);
-
-    return chunks;
+  use.formatted = function format<T>(
+    formatter: (chunkMap: ChunkImportPromiseMap) => T
+  ): FormattedChunksUse<T> {
+    return (cm: ChunkImportOptions, rp?: string) => formatter(use(cm, rp));
   };
+
+  return use;
 }
 
 export {
-  chunkImporterFactoryGenerator as generateChunkImporter
+  chunkImporterFactory as generateChunkImporter
 };
+
+export {
+  IChunkPlugin,
+  ProfilePlugin,
+  cachePlugin
+} from './plugins';

@@ -1,12 +1,12 @@
-import { ChunkImporter, ChunkImportMap, ChunkImportPromise, ChunkImportPromiseMap, ChunkImportArray } from './';
+import { ChunkImporter, ChunkImportOptions, ChunkImportPromiseMap, ChunkImportMap } from './types';
 
-export const isStr = (n: any): n is string => typeof n == 'string';
+const isStr = (n: any): n is string => typeof n == 'string';
 
 export function useChunks(
   importChunk: ChunkImporter,
-  chunksMap: ChunkImportArray | ChunkImportMap,
+  chunksMap: ChunkImportOptions,
   relativePath?: string
-): ChunkImportMap {
+): ChunkImportPromiseMap {
   if (!Array.isArray(chunksMap)) {
     return Object.keys(chunksMap).reduce<ChunkImportPromiseMap>(
       (obj, name) => {
@@ -15,7 +15,7 @@ export function useChunks(
         if (isStr(chunk)) {
           obj[name] = importChunk(chunk.replace('*', name), relativePath);
         } else {
-          obj[name] = chunk as ChunkImportPromise;
+          obj[name] = chunk;
         }
 
         return obj;
@@ -27,11 +27,11 @@ export function useChunks(
     (obj: ChunkImportMap, name: string | ChunkImportMap) => {
       if (isStr(name)) {
         obj[name.replace(/[^\w\d-_]/gi, '-')] = name;
+
+        return obj;
       } else {
         return { ...obj, ...useChunks(importChunk, name, relativePath) };
       }
-
-      return obj;
     },
     {} as ChunkImportMap
   ), relativePath);

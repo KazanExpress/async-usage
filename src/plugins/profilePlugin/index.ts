@@ -1,5 +1,6 @@
-import { IChunkPlugin, Chunk } from '../../';
 import { profileChunk } from './profileChunk';
+import { IChunkPlugin } from '..';
+import { Chunk } from '../../types';
 
 interface ILoads {
   [path: string]: ReturnType<typeof profileChunk>;
@@ -9,6 +10,18 @@ export const isStr = (n: any): n is string => typeof n == 'string';
 
 export class ProfilePlugin implements IChunkPlugin {
   private loads: ILoads = {};
+
+  private maybeReturnPrevChunk(path: string, prevChunk?: Promise<Chunk>) {
+    if (prevChunk) {
+      return prevChunk.then((c: any) => {
+        this.loads[path].stop('cache');
+
+        return c;
+      });
+    }
+
+    return undefined;
+  }
 
   constructor(basePath: string, private logStyle: string | boolean) {
     if (isStr(logStyle)) {
@@ -21,29 +34,13 @@ export class ProfilePlugin implements IChunkPlugin {
   public invoked(path: string, name: string, prevChunk?: Promise<Chunk>) {
     this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : 'color: black');
 
-    if (prevChunk) {
-      return prevChunk.then((c: any) => {
-        this.loads[path].stop('cache');
-
-        return c;
-      });
-    }
-
-    return undefined;
+    return this.maybeReturnPrevChunk(path, prevChunk);
   }
 
   public beforeStart(path: string, _name: string, prevChunk?: Promise<Chunk>) {
-    if (prevChunk) {
-      return prevChunk.then((c: any) => {
-        this.loads[path].stop('cache');
-
-        return c;
-      });
-    }
-
     this.loads[path].start();
 
-    return undefined;
+    return this.maybeReturnPrevChunk(path, prevChunk);
   }
 
   public resolved(path: string, _name: string, chunk: Chunk | PromiseLike<Chunk>) {

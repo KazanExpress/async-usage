@@ -1,15 +1,15 @@
 import { chunkGeneratorFactory } from './generateChunk';
-import { ChunkImporter, Chunk, IChunkPlugin } from './';
+import { IChunkPlugin } from './plugins';
+import { ChunkImporter, ImportFactory } from './types';
 
-export function chunkImporterFactoryGenerator(
-  importFactory: (path: string) => Promise<Chunk>,
+export function chunkImporterFactory(
+  importFactory: ImportFactory,
   basePath: string,
-  plugins: IChunkPlugin[]
-) {
+  plugins: IChunkPlugin[] = []
+): ChunkImporter {
   const generateChunk = chunkGeneratorFactory(importFactory, plugins);
 
-  return function chunkImporterFactory(name: string, relativePath?: string) {
-
+  return function chunkImporter(name: string, relativePath?: string) {
     const generate: ChunkImporter = generateChunk(name);
 
     if (!relativePath) {

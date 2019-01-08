@@ -1,41 +1,34 @@
-import { IChunkPlugin, Chunk } from '../';
+import { IBeforeStartedHook, IChunkPlugin, IStartedHook } from '.';
+import { Chunk } from '../types';
 
 const cache: {
   [path: string]: Promise<Chunk>;
 } = {};
 
-export function cached(path: string) {
+function cached(path: string) {
   return path in cache;
 }
 
-export const cachePlugin = {
-  invoked: (path, _name, prevChunk) => {
-    if (prevChunk) {
-      return prevChunk;
-    }
-
-    if (cached(path)) {
-      return cache[path];
-    }
-
-    return undefined;
-  },
-
-  beforeStart: (path, _name, prevChunk) => {
-    if (prevChunk) {
-      return prevChunk;
-    }
-
-    if (cached(path)) {
-      return cache[path];
-    }
-
-    return undefined;
-  },
-
-  started(path, _name, chunkPromise) {
-    cache[path] = chunkPromise;
-
-    return undefined;
+const cacheChunk: IBeforeStartedHook = (path: string, _name: string, prevChunk?: Promise<Chunk>) => {
+  if (prevChunk) {
+    return prevChunk;
   }
-} as IChunkPlugin;
+
+  if (cached(path)) {
+    return cache[path];
+  }
+
+  return undefined;
+};
+
+const started: IStartedHook = (path: string, _name: string, chunkPromise: Promise<Chunk>) => {
+  cache[path] = chunkPromise;
+
+  return undefined;
+};
+
+export const cachePlugin: IChunkPlugin = {
+  invoked: cacheChunk,
+  beforeStart: cacheChunk,
+  started
+};

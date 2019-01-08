@@ -3,15 +3,23 @@
 [![npm](https://img.shields.io/npm/v/parakeet-mapper.svg?style=flat-square)](https://www.npmjs.com/package/parakeet-mapper) 
 [![npm bundle size (minified)](https://img.shields.io/bundlephobia/minzip/parakeet-mapper.svg?style=flat-square)]() [![dependencies (minified)](https://img.shields.io/badge/dependencies-none-yellow.svg?style=flat-square)]() -->
 
-> Declarative async imports for everyone!
+> Declarative dynamic imports for everyone!
 
 <br/>
+
+## TLDR
+
+This tool allows you to create [dynamic import factories](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) to help your project be KISS and DRY. 😉
+
+Its simple - just create your specific async chunk use-case:
 
 ```ts
 import { createAsyncUsage } from 'async-usage';
 
-const useComponents = createAsyncUsage({
+const importFactory = (path) => import('@/' + path);
 
+const useComponents = createAsyncUsage(importFactory, {
+  basePath: 'components'
 });
 ```
 
