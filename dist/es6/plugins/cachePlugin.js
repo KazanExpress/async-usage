@@ -1,29 +1,23 @@
 const cache = {};
-export function cached(path) {
+function cached(path) {
     return path in cache;
 }
-export const cachePlugin = {
-    invoked: (path, _name, prevChunk) => {
-        if (prevChunk) {
-            return prevChunk;
-        }
-        if (cached(path)) {
-            return cache[path];
-        }
-        return undefined;
-    },
-    beforeStart: (path, _name, prevChunk) => {
-        if (prevChunk) {
-            return prevChunk;
-        }
-        if (cached(path)) {
-            return cache[path];
-        }
-        return undefined;
-    },
-    started(path, _name, chunkPromise) {
-        cache[path] = chunkPromise;
-        return undefined;
+const cacheChunk = (path, _name, prevChunk) => {
+    if (prevChunk) {
+        return prevChunk;
     }
+    if (cached(path)) {
+        return cache[path];
+    }
+    return undefined;
+};
+const started = (path, _name, chunkPromise) => {
+    cache[path] = chunkPromise;
+    return undefined;
+};
+export const cachePlugin = {
+    invoked: cacheChunk,
+    beforeStart: cacheChunk,
+    started
 };
 //# sourceMappingURL=cachePlugin.js.map

@@ -1,7 +1,7 @@
 import { chunkGeneratorFactory } from './generateChunk';
-export function chunkImporterFactoryGenerator(importFactory, basePath, plugins) {
+export function chunkImporterFactory(importFactory, basePath, plugins = []) {
     const generateChunk = chunkGeneratorFactory(importFactory, plugins);
-    return function chunkImporterFactory(name, relativePath) {
+    return function chunkImporter(name, relativePath) {
         const generate = generateChunk(name);
         if (!relativePath) {
             return generate(basePath + '/' + name);

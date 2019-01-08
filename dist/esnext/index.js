@@ -1,27 +1,27 @@
 import { useChunks } from './useChunks';
-import { chunkImporterFactoryGenerator } from './chunkFactory';
-export const defaultOptions = {
-    basePath: '',
-    plugins: []
-};
-export function createAsyncUsage(importFactory, options) {
-    const { basePath, plugins } = options ? { ...defaultOptions, ...options } : defaultOptions;
-    const cif = chunkImporterFactoryGenerator(importFactory, basePath, plugins);
-    const factoryAliases = ['and', 'with'];
-    return function use(chunkMap, relativePath) {
+import { chunkImporterFactory } from './chunkFactory';
+import { isStr } from './plugins';
+export function createAsyncUsage(importFactory, options = '') {
+    const { basePath, plugins } = isStr(options) ? { basePath: options, plugins: [] } : options;
+    const cif = chunkImporterFactory(importFactory, basePath, plugins);
+    function use(chunkMap, relativePath) {
         const chunks = useChunks(cif, chunkMap, relativePath);
-        const factory = (cm, rp) => use({
+        const factory = (cm, rp) => ({
             ...chunks,
-            ...useChunks(cif, cm, rp)
-        }, rp);
-        factoryAliases.forEach(al => chunks[al] = factory);
-        chunks.clean = function () {
-            for (const alias of factoryAliases) {
-                delete this[alias];
-            }
-        }.bind(chunks);
-        return chunks;
+            ...use(cm, rp)
+        });
+        const aliased = {
+            and: factory,
+            with: factory,
+            clean: () => chunks
+        };
+        return { ...aliased, ...chunks };
+    }
+    use.formatted = function format(formatter) {
+        return (cm, rp) => formatter(use(cm, rp));
     };
+    return use;
 }
-export { chunkImporterFactoryGenerator as generateChunkImporter };
+export { chunkImporterFactory as generateChunkImporter };
+export { ProfilePlugin, cachePlugin } from './plugins';
 //# sourceMappingURL=index.js.map

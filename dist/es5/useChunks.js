@@ -9,7 +9,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-export var isStr = function (n) { return typeof n == 'string'; };
+var isStr = function (n) { return typeof n == 'string'; };
 export function useChunks(importChunk, chunksMap, relativePath) {
     if (!Array.isArray(chunksMap)) {
         return Object.keys(chunksMap).reduce(function (obj, name) {
@@ -26,11 +26,11 @@ export function useChunks(importChunk, chunksMap, relativePath) {
     return useChunks(importChunk, chunksMap.reduce(function (obj, name) {
         if (isStr(name)) {
             obj[name.replace(/[^\w\d-_]/gi, '-')] = name;
+            return obj;
         }
         else {
             return __assign({}, obj, useChunks(importChunk, name, relativePath));
         }
-        return obj;
     }, {}), relativePath);
 }
 //# sourceMappingURL=useChunks.js.map

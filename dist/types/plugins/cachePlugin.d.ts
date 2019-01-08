@@ -1,3 +1,2 @@
-import { IChunkPlugin } from '../';
-export declare function cached(path: string): boolean;
+import { IChunkPlugin } from '.';
 export declare const cachePlugin: IChunkPlugin;

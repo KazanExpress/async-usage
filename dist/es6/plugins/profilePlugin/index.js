@@ -11,8 +11,7 @@ export class ProfilePlugin {
             console.log(`Logging "${basePath}" imports...`);
         }
     }
-    invoked(path, name, prevChunk) {
-        this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : 'color: black');
+    maybeReturnPrevChunk(path, prevChunk) {
         if (prevChunk) {
             return prevChunk.then((c) => {
                 this.loads[path].stop('cache');
@@ -21,15 +20,13 @@ export class ProfilePlugin {
         }
         return undefined;
     }
+    invoked(path, name, prevChunk) {
+        this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : 'color: black');
+        return this.maybeReturnPrevChunk(path, prevChunk);
+    }
     beforeStart(path, _name, prevChunk) {
-        if (prevChunk) {
-            return prevChunk.then((c) => {
-                this.loads[path].stop('cache');
-                return c;
-            });
-        }
         this.loads[path].start();
-        return undefined;
+        return this.maybeReturnPrevChunk(path, prevChunk);
     }
     resolved(path, _name, chunk) {
         this.loads[path].stop('info');

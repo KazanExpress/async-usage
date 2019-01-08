@@ -11,9 +11,8 @@ var ProfilePlugin = /** @class */ (function () {
             console.log("Logging \"" + basePath + "\" imports...");
         }
     }
-    ProfilePlugin.prototype.invoked = function (path, name, prevChunk) {
+    ProfilePlugin.prototype.maybeReturnPrevChunk = function (path, prevChunk) {
         var _this = this;
-        this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : 'color: black');
         if (prevChunk) {
             return prevChunk.then(function (c) {
                 _this.loads[path].stop('cache');
@@ -22,16 +21,13 @@ var ProfilePlugin = /** @class */ (function () {
         }
         return undefined;
     };
+    ProfilePlugin.prototype.invoked = function (path, name, prevChunk) {
+        this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : 'color: black');
+        return this.maybeReturnPrevChunk(path, prevChunk);
+    };
     ProfilePlugin.prototype.beforeStart = function (path, _name, prevChunk) {
-        var _this = this;
-        if (prevChunk) {
-            return prevChunk.then(function (c) {
-                _this.loads[path].stop('cache');
-                return c;
-            });
-        }
         this.loads[path].start();
-        return undefined;
+        return this.maybeReturnPrevChunk(path, prevChunk);
     };
     ProfilePlugin.prototype.resolved = function (path, _name, chunk) {
         this.loads[path].stop('info');

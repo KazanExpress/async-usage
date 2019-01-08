@@ -10,8 +10,9 @@ var isDef = function (v) { return typeof v !== 'undefined'; };
 export function chunkGeneratorFactory(importFactory, plugins) {
     var pluginsMap = plugins.reduce(function (acc, pl) {
         for (var key in acc) {
-            if (pl[key] && typeof pl[key] === 'function') {
-                acc[key].push(pl[key].bind(pl));
+            var plFunc = pl[key];
+            if (typeof plFunc === 'function') {
+                acc[key].push(plFunc.bind(pl));
             }
         }
         return acc;

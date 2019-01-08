@@ -10,27 +10,27 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 import { useChunks } from './useChunks';
-import { chunkImporterFactoryGenerator } from './chunkFactory';
-export var defaultOptions = {
-    basePath: '',
-    plugins: []
-};
+import { chunkImporterFactory } from './chunkFactory';
+import { isStr } from './plugins';
 export function createAsyncUsage(importFactory, options) {
-    var _a = options ? __assign({}, defaultOptions, options) : defaultOptions, basePath = _a.basePath, plugins = _a.plugins;
-    var cif = chunkImporterFactoryGenerator(importFactory, basePath, plugins);
-    var factoryAliases = ['and', 'with'];
-    return function use(chunkMap, relativePath) {
+    if (options === void 0) { options = ''; }
+    var _a = isStr(options) ? { basePath: options, plugins: [] } : options, basePath = _a.basePath, plugins = _a.plugins;
+    var cif = chunkImporterFactory(importFactory, basePath, plugins);
+    function use(chunkMap, relativePath) {
         var chunks = useChunks(cif, chunkMap, relativePath);
-        var factory = function (cm, rp) { return use(__assign({}, chunks, useChunks(cif, cm, rp)), rp); };
-        factoryAliases.forEach(function (al) { return chunks[al] = factory; });
-        chunks.clean = function () {
-            for (var _i = 0, factoryAliases_1 = factoryAliases; _i < factoryAliases_1.length; _i++) {
-                var alias = factoryAliases_1[_i];
-                delete this[alias];
-            }
-        }.bind(chunks);
-        return chunks;
+        var factory = function (cm, rp) { return (__assign({}, chunks, use(cm, rp))); };
+        var aliased = {
+            and: factory,
+            with: factory,
+            clean: function () { return chunks; }
+        };
+        return __assign({}, aliased, chunks);
+    }
+    use.formatted = function format(formatter) {
+        return function (cm, rp) { return formatter(use(cm, rp)); };
     };
+    return use;
 }
-export { chunkImporterFactoryGenerator as generateChunkImporter };
+export { chunkImporterFactory as generateChunkImporter };
+export { ProfilePlugin, cachePlugin } from './plugins';
 //# sourceMappingURL=index.js.map

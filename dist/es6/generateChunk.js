@@ -10,8 +10,9 @@ const isDef = (v) => typeof v !== 'undefined';
 export function chunkGeneratorFactory(importFactory, plugins) {
     const pluginsMap = plugins.reduce((acc, pl) => {
         for (const key in acc) {
-            if (pl[key] && typeof pl[key] === 'function') {
-                acc[key].push(pl[key].bind(pl));
+            const plFunc = pl[key];
+            if (typeof plFunc === 'function') {
+                acc[key].push(plFunc.bind(pl));
             }
         }
         return acc;
@@ -35,7 +36,7 @@ export function chunkGeneratorFactory(importFactory, plugins) {
                 if (isDef(startedResult)) {
                     return Promise.resolve(startedResult);
                 }
-                return promise.then(chunk => invokePlugins(pluginsMap.resolved, [path, name, chunk], chunk)).catch(e => {
+                return promise.then(chunk => invokePlugins(pluginsMap.resolved, [path, name, chunk], chunk)).catch((e) => {
                     const rejectedRes = invokePlugins(pluginsMap.rejected, [path, name, e], undefined);
                     if (isDef(rejectedRes)) {
                         return rejectedRes;
