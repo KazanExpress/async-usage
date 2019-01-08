@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -9,8 +10,9 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var isStr = function (n) { return typeof n == 'string'; };
-export function useChunks(importChunk, chunksMap, relativePath) {
+function useChunks(importChunk, chunksMap, relativePath) {
     if (!Array.isArray(chunksMap)) {
         return Object.keys(chunksMap).reduce(function (obj, name) {
             var chunk = chunksMap[name];
@@ -33,4 +35,5 @@ export function useChunks(importChunk, chunksMap, relativePath) {
         }
     }, {}), relativePath);
 }
+exports.useChunks = useChunks;
 //# sourceMappingURL=useChunks.js.map

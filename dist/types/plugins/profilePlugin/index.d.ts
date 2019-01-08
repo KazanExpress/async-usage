@@ -1,5 +1,5 @@
 import { IChunkPlugin } from '..';
-import { Chunk } from '../../types';
+import { Chunk } from 'types';
 export declare const isStr: (n: any) => n is string;
 export declare class ProfilePlugin implements IChunkPlugin {
     private logStyle;

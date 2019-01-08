@@ -1,10 +1,12 @@
-import { profileChunk } from './profileChunk';
-export var isStr = function (n) { return typeof n == 'string'; };
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var profileChunk_1 = require("./profileChunk");
+exports.isStr = function (n) { return typeof n == 'string'; };
 var ProfilePlugin = /** @class */ (function () {
     function ProfilePlugin(basePath, logStyle) {
         this.logStyle = logStyle;
         this.loads = {};
-        if (isStr(logStyle)) {
+        if (exports.isStr(logStyle)) {
             console.log(basePath + ' will be highlighted on load with %c' + logStyle, logStyle);
         }
         else if (logStyle) {
@@ -22,7 +24,7 @@ var ProfilePlugin = /** @class */ (function () {
         return undefined;
     };
     ProfilePlugin.prototype.invoked = function (path, name, prevChunk) {
-        this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : 'color: black');
+        this.loads[path] = profileChunk_1.profileChunk(path, name, exports.isStr(this.logStyle) ? this.logStyle : 'color: black');
         return this.maybeReturnPrevChunk(path, prevChunk);
     };
     ProfilePlugin.prototype.beforeStart = function (path, _name, prevChunk) {
@@ -39,5 +41,5 @@ var ProfilePlugin = /** @class */ (function () {
     };
     return ProfilePlugin;
 }());
-export { ProfilePlugin };
+exports.ProfilePlugin = ProfilePlugin;
 //# sourceMappingURL=index.js.map

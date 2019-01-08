@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -9,15 +10,17 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { useChunks } from './useChunks';
-import { chunkImporterFactory } from './chunkFactory';
-import { isStr } from './plugins';
-export function createAsyncUsage(importFactory, options) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var useChunks_1 = require("./useChunks");
+var chunkFactory_1 = require("./chunkFactory");
+exports.generateChunkImporter = chunkFactory_1.chunkImporterFactory;
+var plugins_1 = require("./plugins");
+function createAsyncUsage(importFactory, options) {
     if (options === void 0) { options = ''; }
-    var _a = isStr(options) ? { basePath: options, plugins: [] } : options, basePath = _a.basePath, plugins = _a.plugins;
-    var cif = chunkImporterFactory(importFactory, basePath, plugins);
+    var _a = plugins_1.isStr(options) ? { basePath: options, plugins: [] } : options, basePath = _a.basePath, plugins = _a.plugins;
+    var cif = chunkFactory_1.chunkImporterFactory(importFactory, basePath, plugins);
     function use(chunkMap, relativePath) {
-        var chunks = useChunks(cif, chunkMap, relativePath);
+        var chunks = useChunks_1.useChunks(cif, chunkMap, relativePath);
         var factory = function (cm, rp) { return (__assign({}, chunks, use(cm, rp))); };
         var aliased = {
             and: factory,
@@ -31,6 +34,8 @@ export function createAsyncUsage(importFactory, options) {
     };
     return use;
 }
-export { chunkImporterFactory as generateChunkImporter };
-export { ProfilePlugin, cachePlugin } from './plugins';
+exports.createAsyncUsage = createAsyncUsage;
+var plugins_2 = require("./plugins");
+exports.ProfilePlugin = plugins_2.ProfilePlugin;
+exports.cachePlugin = plugins_2.cachePlugin;
 //# sourceMappingURL=index.js.map

@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var timed = function (time) {
     var digitsTillSeconds = 3;
     var strTime;
@@ -30,7 +32,7 @@ function logChunk(path, name, logStyle, time, type, error) {
     var resultingColor = type === 'error' ? 'red' : type === 'info' ? 'green' : 'purple';
     console[type === 'error' ? 'error' : 'info']("%c%s%c%s%c%s: %c%s\n%c%s%c%s%c%s%s", !error ? padStyle : 'all: unset', !error ? pad + strTime + suffix : '' /* type === 'error' ? '' : '  cache' */, dividerStyle, divider1, messageStyle(resultingColor), message, logStyle, name, padStyle, dePad, dividerStyle, divider2, pathStyle, path, error);
 }
-export function profileChunk(path, name, logStyle) {
+function profileChunk(path, name, logStyle) {
     if (!logStyle) {
         return {
             start: function () { return undefined; },
@@ -49,4 +51,5 @@ export function profileChunk(path, name, logStyle) {
         }
     };
 }
+exports.profileChunk = profileChunk;
 //# sourceMappingURL=profileChunk.js.map

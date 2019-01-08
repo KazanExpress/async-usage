@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var invokePlugins = function (methods, args, initial) { return methods.reduce(function (res, plugin) {
     if (plugin) {
         return plugin.apply(void 0, args.concat([res])) || res;
@@ -7,7 +9,7 @@ var invokePlugins = function (methods, args, initial) { return methods.reduce(fu
     }
 }, initial); };
 var isDef = function (v) { return typeof v !== 'undefined'; };
-export function chunkGeneratorFactory(importFactory, plugins) {
+function chunkGeneratorFactory(importFactory, plugins) {
     var pluginsMap = plugins.reduce(function (acc, pl) {
         for (var key in acc) {
             var plFunc = pl[key];
@@ -51,4 +53,5 @@ export function chunkGeneratorFactory(importFactory, plugins) {
         };
     };
 }
+exports.chunkGeneratorFactory = chunkGeneratorFactory;
 //# sourceMappingURL=generateChunk.js.map

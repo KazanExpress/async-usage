@@ -1,4 +1,4 @@
-import { Chunk } from '../types';
+import { Chunk } from 'types';
 export * from './cachePlugin';
 export * from './profilePlugin';
 export declare type PluginFunction = (...args: any[]) => Chunk | Promise<Chunk> | undefined;

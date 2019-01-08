@@ -1,7 +1,9 @@
-import { chunkGeneratorFactory } from './generateChunk';
-export function chunkImporterFactory(importFactory, basePath, plugins) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var generateChunk_1 = require("./generateChunk");
+function chunkImporterFactory(importFactory, basePath, plugins) {
     if (plugins === void 0) { plugins = []; }
-    var generateChunk = chunkGeneratorFactory(importFactory, plugins);
+    var generateChunk = generateChunk_1.chunkGeneratorFactory(importFactory, plugins);
     return function chunkImporter(name, relativePath) {
         var generate = generateChunk(name);
         if (!relativePath) {
@@ -12,4 +14,5 @@ export function chunkImporterFactory(importFactory, basePath, plugins) {
         return generate(sourceless + '/' + name);
     };
 }
+exports.chunkImporterFactory = chunkImporterFactory;
 //# sourceMappingURL=chunkFactory.js.map

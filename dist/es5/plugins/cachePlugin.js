@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var cache = {};
 var cacheChunk = function (path, _name, prevChunk) {
     if (prevChunk) {
@@ -12,7 +14,7 @@ var started = function (path, _name, chunkPromise) {
     cache[path] = chunkPromise;
     return undefined;
 };
-export var cachePlugin = {
+exports.cachePlugin = {
     invoked: cacheChunk,
     beforeStart: cacheChunk,
     started: started
