@@ -1,0 +1,3 @@
+[submodule ".commitlint"]
+	path = .commitlint
+	url = git@github.com:KazanExpress/ke-frontend-commitlint.git
