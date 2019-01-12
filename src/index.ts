@@ -12,6 +12,8 @@ export type ChunksUse = {
   (ChunksMap: ChunkImportArray): ChunkImportPromiseMap;
   (ChunksMap: ChunkImportArray, relativePath: string): ExtendedChunksMap;
   (ChunksMap: ChunkImportArray, relativePath: string): ChunkImportPromiseMap;
+
+  (path: string, relativePath?: string): ChunkImportPromise;
 };
 
 export type ExtendedChunksMap<Keys extends PropertyKey = string> = ChunkImportPromiseMap<Keys> & {
@@ -41,17 +43,21 @@ export function createAsyncUsage(
     plugins
   );
 
-  function use(chunkMap: ChunkImportOptions, relativePath?: string): ExtendedChunksMap {
+  function use(chunkMap: ChunkImportOptions | string, relativePath?: string): ExtendedChunksMap | ChunkImportPromise {
+    if (isStr(chunkMap)) {
+      return cif(chunkMap, relativePath);
+    }
+
     const chunks = useChunks(
       cif,
       chunkMap,
       relativePath
     );
 
-    const factory: ChunksUse = (cm: ChunkImportOptions, rp?: string) => ({
+    const factory: ChunksUse = ((cm: ChunkImportOptions, rp?: string) => ({
       ...chunks,
       ...use(cm, rp)
-    });
+    })) as ChunksUse;
 
     const aliased = {
       and: factory,
@@ -62,12 +68,8 @@ export function createAsyncUsage(
     return { ...aliased, ...chunks } as ExtendedChunksMap;
   }
 
-  return use;
+  return use as ChunksUse;
 }
-
-export {
-  chunkImporterFactory as generateChunkImporter
-};
 
 export {
   IChunkPlugin,
