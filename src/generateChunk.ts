@@ -18,7 +18,7 @@ export function chunkGeneratorFactory(
         const beforeStartResult = invokePlugins(pluginsMap.beforeStart, [path, name], undefined);
 
         if (isDef(beforeStartResult)) {
-          return Promise.resolve(beforeStartResult);
+          return beforeStartResult;
         }
 
         const promise = importFactory(path);
@@ -26,7 +26,7 @@ export function chunkGeneratorFactory(
         const startedResult = invokePlugins(pluginsMap.started, [path, name, promise], undefined);
 
         if (isDef(startedResult)) {
-          return Promise.resolve(startedResult);
+          return startedResult;
         }
 
         return promise.then<Chunk>(chunk =>
