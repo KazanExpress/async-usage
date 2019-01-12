@@ -1,4 +1,4 @@
-import { invokePlugins } from '../../src/plugins';
+import { invokePlugins, mapPlugins, cachePlugin, ProfilePlugin } from '../../src/plugins';
 
 describe('invokePlugins', () => {
   const pluginFunction = (arg1: any, arg2: any, arg3: any) => ({ default: 'plugin', arg1, arg2, arg3 });
@@ -39,5 +39,25 @@ describe('invokePlugins', () => {
     expect(result.arg1).toBe('arg1');
     expect(result.arg2).toBe('arg2');
     expect(result.arg3).toBe('arg3');
+  });
+});
+
+describe('mapPlugins', () => {
+  it('maps correct plugins', () => {
+    const map = mapPlugins([
+      cachePlugin,
+      new ProfilePlugin('', true)
+    ]);
+
+    expect(map).toBeInstanceOf(Object);
+
+    // tslint:disable-next-line:no-magic-numbers
+    expect(map.invoked.length).toBe(2);
+    // tslint:disable-next-line:no-magic-numbers
+    expect(map.beforeStart.length).toBe(2);
+
+    expect(map.started.length).toBe(1);
+    expect(map.resolved.length).toBe(1);
+    expect(map.rejected.length).toBe(1);
   });
 });
