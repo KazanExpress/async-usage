@@ -1,4 +1,4 @@
-import { Chunk } from 'types';
+import { Chunk } from './types';
 import { IChunkPlugin, PluginFunction, PluginFunctionCollection } from 'plugins';
 
 const invokePlugins = <P extends PluginFunction>(

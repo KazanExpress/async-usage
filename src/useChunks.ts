@@ -1,4 +1,4 @@
-import { ChunkImporter, ChunkImportOptions, ChunkImportPromiseMap, ChunkImportMap } from 'types';
+import { ChunkImporter, ChunkImportOptions, ChunkImportPromiseMap, ChunkImportMap } from './types';
 
 const isStr = (n: any): n is string => typeof n == 'string';
 
