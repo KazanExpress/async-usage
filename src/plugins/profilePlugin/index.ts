@@ -23,7 +23,7 @@ export class ProfilePlugin implements IChunkPlugin {
   }
 
   constructor(basePath: string, private logStyle: string | boolean) {
-    if (isStr(logStyle)) {
+    if (isStr(logStyle) && logStyle) {
       console.log(basePath + ' will be highlighted on load with %c' + logStyle, logStyle);
     } else if (logStyle) {
       console.log(`Logging "${basePath}" imports...`);
@@ -31,7 +31,7 @@ export class ProfilePlugin implements IChunkPlugin {
   }
 
   public invoked(path: string, name: string, prevChunk?: Promise<Chunk>) {
-    this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : 'color: black');
+    this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : (this.logStyle ? 'color: black' : ''));
 
     return this.maybeReturnPrevChunk(path, prevChunk);
   }
