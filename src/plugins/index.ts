@@ -1,4 +1,5 @@
 import { Chunk } from '../types';
+import { isStr } from '../util';
 
 export * from './cachePlugin';
 export * from './profilePlugin';
@@ -11,6 +12,8 @@ export type IResolvedHook = (path: string, name: string, value: Chunk) => Chunk 
 export type IRejectedHook = (path: string, name: string, reason: any) => Chunk | PromiseLike<Chunk> | undefined;
 
 export interface IChunkPlugin {
+  name: string;
+
   invoked?: IBeforeStartedHook;
   beforeStart?: IBeforeStartedHook;
   started?: IStartedHook;
@@ -19,6 +22,8 @@ export interface IChunkPlugin {
 }
 
 export type PluginFunctionCollection = {
+  name: string[];
+} & {
   [key: string]: PluginFunction[];
 
   invoked: IBeforeStartedHook[];
@@ -29,16 +34,20 @@ export type PluginFunctionCollection = {
 };
 
 interface IChunkPluginIterable extends IChunkPlugin {
-  [key: string]: PluginFunction | undefined;
+  [key: string]: PluginFunction | string | undefined;
 }
 
-export const invokePlugins = <P extends PluginFunction>(
+export const invokePlugins = (names: Array<string>) => <P extends PluginFunction>(
   methods: Array<P>,
   args: Parameters<P>,
   initial: ReturnType<P>
-) => methods.reduce((res, plugin) => {
+) => methods.reduce((res, plugin, idx) => {
   if (plugin) {
-    return plugin(...args, res) as ReturnType<P> || res;
+    try {
+      return plugin(...args, res) as ReturnType<P> || res;
+    } catch (e) {
+      throw new Error(`Error occured executing ${plugin.name} from plugin ${names[idx]}: \n\n${e}`);
+    }
   } else {
     return res;
   }
@@ -50,11 +59,14 @@ export const mapPlugins = (plugins: IChunkPlugin[]) => plugins.reduce<PluginFunc
 
     if (typeof plFunc === 'function') {
       acc[key].push(plFunc.bind(pl));
+    } else if (isStr(plFunc)) {
+      acc.name.push(plFunc);
     }
   }
 
   return acc;
 }, {
+  name: [],
   invoked: [],
   beforeStart: [],
   started: [],

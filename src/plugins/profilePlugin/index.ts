@@ -8,6 +8,8 @@ interface ILoads {
 }
 
 export class ProfilePlugin implements IChunkPlugin {
+  public readonly name: string = 'profile';
+
   private loads: ILoads = {};
 
   private maybeReturnPrevChunk(path: string, prevChunk?: Promise<Chunk>) {

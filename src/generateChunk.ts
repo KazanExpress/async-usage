@@ -9,13 +9,14 @@ export function chunkGeneratorFactory(
   plugins: IChunkPlugin[]
 ) {
   const pluginsMap = mapPlugins(plugins);
+  const invoke = invokePlugins(pluginsMap.name);
 
   return function generateChunk(name: string) {
     return function generate(path: string): () => Promise<Chunk> {
-      const invokedResult = invokePlugins(pluginsMap.invoked, [path, name], undefined);
+      const invokedResult = invoke(pluginsMap.invoked, [path, name], undefined);
 
       return isDef(invokedResult) ? () => invokedResult : function () {
-        const beforeStartResult = invokePlugins(pluginsMap.beforeStart, [path, name], undefined);
+        const beforeStartResult = invoke(pluginsMap.beforeStart, [path, name], undefined);
 
         if (isDef(beforeStartResult)) {
           return beforeStartResult;
@@ -23,16 +24,16 @@ export function chunkGeneratorFactory(
 
         const promise = importFactory(path);
 
-        const startedResult = invokePlugins(pluginsMap.started, [path, name, promise], undefined);
+        const startedResult = invoke(pluginsMap.started, [path, name, promise], undefined);
 
         if (isDef(startedResult)) {
           return startedResult;
         }
 
         return promise.then<Chunk>(chunk =>
-          invokePlugins(pluginsMap.resolved, [path, name, chunk], chunk)
+          invoke(pluginsMap.resolved, [path, name, chunk], chunk)
         ).catch<Chunk>((e: Error) => {
-          const rejectedRes = invokePlugins(pluginsMap.rejected, [path, name, e], undefined);
+          const rejectedRes = invoke(pluginsMap.rejected, [path, name, e], undefined);
 
           if (isDef(rejectedRes)) {
             return rejectedRes;

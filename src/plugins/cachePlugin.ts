@@ -24,6 +24,7 @@ const started: IStartedHook = (path: string, _name: string, chunkPromise: Promis
 };
 
 export const cachePlugin: IChunkPlugin = {
+  name: 'cache',
   invoked: cacheChunk,
   beforeStart: cacheChunk,
   started
