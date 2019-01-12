@@ -27,3 +27,37 @@ export type PluginFunctionCollection = {
   resolved: IResolvedHook[];
   rejected: IRejectedHook[];
 };
+
+interface IChunkPluginIterable extends IChunkPlugin {
+  [key: string]: PluginFunction | undefined;
+}
+
+export const invokePlugins = <P extends PluginFunction>(
+  methods: Array<P>,
+  args: Parameters<P>,
+  initial: ReturnType<P>
+) => methods.reduce((res, plugin) => {
+  if (plugin) {
+    return plugin(...args, res) as ReturnType<P> || res;
+  } else {
+    return res;
+  }
+}, initial);
+
+export const mapPlugins = (plugins: IChunkPlugin[]) => plugins.reduce<PluginFunctionCollection>((acc, pl) => {
+  for (const key in acc) {
+    const plFunc = (pl as IChunkPluginIterable)[key];
+
+    if (typeof plFunc === 'function') {
+      acc[key].push(plFunc.bind(pl));
+    }
+  }
+
+  return acc;
+}, {
+  invoked: [],
+  beforeStart: [],
+  started: [],
+  rejected: [],
+  resolved: []
+});

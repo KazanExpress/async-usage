@@ -1,46 +1,14 @@
 import { Chunk } from './types';
-import { IChunkPlugin, PluginFunction, PluginFunctionCollection } from './plugins';
-
-export const invokePlugins = <P extends PluginFunction>(
-  methods: Array<P>,
-  args: Parameters<P>,
-  initial: ReturnType<P>
-) => methods.reduce((res, plugin) => {
-  if (plugin) {
-    return plugin(...args, res) as ReturnType<P> || res;
-  } else {
-    return res;
-  }
-}, initial);
+import { IChunkPlugin, invokePlugins, mapPlugins } from './plugins';
 
 const isDef = (v: any): v is Chunk | Promise<Chunk> => typeof v !== 'undefined';
 
-
-interface IChunkPluginIterable extends IChunkPlugin {
-  [key: string]: PluginFunction | undefined;
-}
 
 export function chunkGeneratorFactory(
   importFactory: (path: string) => Promise<Chunk>,
   plugins: IChunkPlugin[]
 ) {
-  const pluginsMap = plugins.reduce<PluginFunctionCollection>((acc, pl) => {
-    for (const key in acc) {
-      const plFunc = (pl as IChunkPluginIterable)[key];
-
-      if (typeof plFunc === 'function') {
-        acc[key].push(plFunc.bind(pl));
-      }
-    }
-
-    return acc;
-  }, {
-    invoked: [],
-    beforeStart: [],
-    started: [],
-    rejected: [],
-    resolved: []
-  });
+  const pluginsMap = mapPlugins(plugins);
 
   return function generateChunk(name: string) {
     return function generate(path: string): () => Promise<Chunk> {
