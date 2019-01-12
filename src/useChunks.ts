@@ -1,6 +1,5 @@
 import { ChunkImporter, ChunkImportOptions, ChunkImportPromiseMap, ChunkImportMap } from './types';
-
-const isStr = (n: any): n is string => typeof n == 'string';
+import { isStr } from './util';
 
 export function useChunks(
   importChunk: ChunkImporter,

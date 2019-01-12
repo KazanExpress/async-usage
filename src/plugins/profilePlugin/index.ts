@@ -1,12 +1,11 @@
 import { profileChunk } from './profileChunk';
 import { IChunkPlugin } from '..';
 import { Chunk } from '../../types';
+import { isStr } from '../../util';
 
 interface ILoads {
   [path: string]: ReturnType<typeof profileChunk>;
 }
-
-export const isStr = (n: any): n is string => typeof n == 'string';
 
 export class ProfilePlugin implements IChunkPlugin {
   private loads: ILoads = {};

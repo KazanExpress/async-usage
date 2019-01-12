@@ -19,7 +19,6 @@
     "strictPropertyInitialization": true,
     "declarationDir": "dist/types",
     "outDir": "dist/es6",
-    "baseUrl": "./src",
     "typeRoots": [
       "node_modules/@types"
     ]
