@@ -25,7 +25,7 @@
     "index.ts",
     "dist"
   ],
-  "description": "Declarative async imports for everyone!",
+  "description": "Declarative dynamic imports for everyone!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KazanExpress/async-usage.git"
