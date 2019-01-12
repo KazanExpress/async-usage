@@ -1,7 +1,8 @@
 import { useChunks } from './useChunks';
 import { chunkImporterFactory } from './chunkFactory';
-import { IChunkPlugin, isStr } from './plugins';
+import { IChunkPlugin } from './plugins';
 import { ChunkImportMap, ChunkImportPromiseMap, ChunkImportArray, ChunkImportOptions, ImportFactory, ChunkImportPromise } from './types';
+import { isStr } from './util';
 
 export type ChunksUse = {
   <M extends ChunkImportMap>(ChunksMap: M): ExtendedChunksMap<keyof M>;
