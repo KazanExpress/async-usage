@@ -1,7 +1,7 @@
 import { Chunk } from './types';
 import { IChunkPlugin, PluginFunction, PluginFunctionCollection } from './plugins';
 
-const invokePlugins = <P extends PluginFunction>(
+export const invokePlugins = <P extends PluginFunction>(
   methods: Array<P>,
   args: Parameters<P>,
   initial: ReturnType<P>
