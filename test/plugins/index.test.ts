@@ -10,7 +10,7 @@ describe('invokePlugins', () => {
   });
 
   it('invokes plugin functions with right amount of arguments', () => {
-    const result = invokePlugins(
+    const result = invokePlugins([])(
       [pluginFunction],
       ['arg1', 'arg2', 'arg3'],
       defaultChunk
@@ -26,7 +26,7 @@ describe('invokePlugins', () => {
   });
 
   it('ignores undefined handlers and returns', () => {
-    const result = invokePlugins(
+    const result = invokePlugins([])(
       [undefined, pluginFunction, (_1, _2, _3) => undefined],
       ['arg1', 'arg2', 'arg3'],
       defaultChunk

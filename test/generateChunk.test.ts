@@ -43,6 +43,7 @@ describe('chunkGeneratorFactory', () => {
     const sampleChunk = { default: 'sample' };
 
     const samplePlugin: IChunkPlugin = {
+      name: 'sample',
       invoked: (_1, _2, _) => (++invoked, undefined),
       beforeStart: (_1, _2, _) => (++beforeStart, undefined),
       started: (_1, _2, _) => (++started, undefined),
