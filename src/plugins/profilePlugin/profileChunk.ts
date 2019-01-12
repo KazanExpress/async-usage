@@ -4,6 +4,7 @@ const timed = (time: string) => {
   let strTime: string;
   let suffix: string;
 
+  /* istanbul ignore if */
   if (time.length > digitsTillSeconds) {
     strTime = time.substr(0, time.length - digitsTillSeconds);
     suffix = ' s ';
