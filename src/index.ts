@@ -14,11 +14,6 @@ export type ChunksUse = {
   (ChunksMap: ChunkImportArray, relativePath: string): ChunkImportPromiseMap;
 };
 
-export type FormattedChunksUse<R> = {
-  (ChunksMap: ChunkImportOptions): R;
-  (ChunksMap: ChunkImportOptions, relativePath: string): R;
-};
-
 export type ExtendedChunksMap<Keys extends PropertyKey = string> = ChunkImportPromiseMap<Keys> & {
   [alias in 'and' | 'with']: ChunksUse;
 } & {
@@ -36,9 +31,9 @@ export function createAsyncUsage(
   options: IAsyncUsageOptions | string = ''
 ): ChunksUse {
   const {
-    basePath,
-    plugins
-  } = isStr(options) ? { basePath: options, plugins: [] } : options;
+    basePath = '',
+    plugins = []
+  } = isStr(options) ? { basePath: options } : options;
 
   const cif = chunkImporterFactory(
     importFactory,
@@ -66,12 +61,6 @@ export function createAsyncUsage(
 
     return { ...aliased, ...chunks } as ExtendedChunksMap;
   }
-
-  use.formatted = function format<T>(
-    formatter: (chunkMap: ChunkImportPromiseMap) => T
-  ): FormattedChunksUse<T> {
-    return (cm: ChunkImportOptions, rp?: string) => formatter(use(cm, rp));
-  };
 
   return use;
 }
