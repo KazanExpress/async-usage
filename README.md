@@ -15,7 +15,7 @@ You can use it to reduce code repetition in your project's imports.
 
 This tool allows you to create [dynamic import factories](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) to help your project be KISS and DRY. 😉
 
-Mostly designed to work with [webpack](http://webpackjs.org), but can be asily tuned to work with other bundles or even native browser dynamic imports.
+Mostly designed to work with [webpack](http://webpackjs.org), but can be easily tuned to work with other bundlers or even native browser dynamic imports.
 
 Its simple - just create your specific async chunk use-case:
 
