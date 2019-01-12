@@ -1,9 +1,18 @@
-# Async Usage
-<!-- 
-[![npm](https://img.shields.io/npm/v/parakeet-mapper.svg?style=flat-square)](https://www.npmjs.com/package/async-usage) 
-[![npm bundle size (minified)](https://img.shields.io/bundlephobia/minzip/async-usage.svg?style=flat-square)]() [![dependencies (minified)](https://img.shields.io/badge/dependencies-none-yellow.svg?style=flat-square)]() -->
+<h1 align="center">
+  <img src="logo/async-usage.svg"/>
+</h1>
 
-> Declarative dynamic imports for everyone!
+<p align="center">
+  <a href="https://travis-ci.org/KazanExpress/async-usage"><img src="https://img.shields.io/travis/KazanExpress/async-usage/master.svg?logo=travis&amp;style=flat-square" alt="Build Status" /></a> <a href="https://coveralls.io/github/KazanExpress/async-usage?branch=master"><img src="https://img.shields.io/coveralls/github/KazanExpress/async-usage/master.svg?style=flat-square" alt="Coverage status" /></a> <a href="https://www.npmjs.com/package/async-usage"><img src="https://img.shields.io/npm/v/async-usage.svg?style=flat-square" alt="npm" /></a> 
+  <a href=""><img src="https://img.shields.io/bundlephobia/minzip/async-usage.svg?style=flat-square" alt="npm bundle size (minified)" /></a> <a href=""><img src="https://img.shields.io/badge/dependencies-none-yellow.svg?style=flat-square" alt="dependencies (minified)" /></a>
+</p>
+
+<p align="center">
+  Declarative dynamic imports for everyone!
+</p>
+
+<p align="center"><code>npm i -S async-usage</code></p>
+
 
 ## What is it?
 
