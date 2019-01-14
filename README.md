@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="logo/async-usage.png">
+  <img style="max-width: 500px" src="logo/async-usage.png">
 </h1>
 
 <p align="center">
