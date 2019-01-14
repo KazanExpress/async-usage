@@ -1,20 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var cache = {};
+exports.cache = {};
 var cacheChunk = function (path, _name, prevChunk) {
     if (prevChunk) {
         return prevChunk;
     }
-    if (path in cache) {
-        return cache[path];
+    if (path in exports.cache) {
+        return exports.cache[path];
     }
     return undefined;
 };
 var started = function (path, _name, chunkPromise) {
-    cache[path] = chunkPromise;
+    exports.cache[path] = chunkPromise;
     return undefined;
 };
 exports.cachePlugin = {
+    name: 'cache',
     invoked: cacheChunk,
     beforeStart: cacheChunk,
     started: started

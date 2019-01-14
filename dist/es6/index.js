@@ -1,12 +1,15 @@
 import { useChunks } from './useChunks';
 import { chunkImporterFactory } from './chunkFactory';
-import { isStr } from './plugins';
+import { isStr } from './util';
 export function createAsyncUsage(importFactory, options = '') {
-    const { basePath, plugins } = isStr(options) ? { basePath: options, plugins: [] } : options;
+    const { basePath = '', plugins = [] } = isStr(options) ? { basePath: options } : options;
     const cif = chunkImporterFactory(importFactory, basePath, plugins);
     function use(chunkMap, relativePath) {
+        if (isStr(chunkMap)) {
+            return cif(chunkMap, relativePath);
+        }
         const chunks = useChunks(cif, chunkMap, relativePath);
-        const factory = (cm, rp) => (Object.assign({}, chunks, use(cm, rp)));
+        const factory = ((cm, rp) => (Object.assign({}, chunks, use(cm, rp))));
         const aliased = {
             and: factory,
             with: factory,
@@ -14,11 +17,7 @@ export function createAsyncUsage(importFactory, options = '') {
         };
         return Object.assign({}, aliased, chunks);
     }
-    use.formatted = function format(formatter) {
-        return (cm, rp) => formatter(use(cm, rp));
-    };
     return use;
 }
-export { chunkImporterFactory as generateChunkImporter };
 export { ProfilePlugin, cachePlugin } from './plugins';
 //# sourceMappingURL=index.js.map

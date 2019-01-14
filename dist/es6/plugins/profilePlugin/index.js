@@ -1,10 +1,11 @@
 import { profileChunk } from './profileChunk';
-export const isStr = (n) => typeof n == 'string';
+import { isStr } from '../../util';
 export class ProfilePlugin {
     constructor(basePath, logStyle) {
         this.logStyle = logStyle;
+        this.name = 'profile';
         this.loads = {};
-        if (isStr(logStyle)) {
+        if (isStr(logStyle) && logStyle) {
             console.log(basePath + ' will be highlighted on load with %c' + logStyle, logStyle);
         }
         else if (logStyle) {
@@ -21,7 +22,7 @@ export class ProfilePlugin {
         return undefined;
     }
     invoked(path, name, prevChunk) {
-        this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : 'color: black');
+        this.loads[path] = profileChunk(path, name, isStr(this.logStyle) ? this.logStyle : (this.logStyle ? 'color: black' : ''));
         return this.maybeReturnPrevChunk(path, prevChunk);
     }
     beforeStart(path, _name, prevChunk) {

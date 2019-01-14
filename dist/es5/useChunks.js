@@ -11,12 +11,12 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var isStr = function (n) { return typeof n == 'string'; };
+var util_1 = require("./util");
 function useChunks(importChunk, chunksMap, relativePath) {
     if (!Array.isArray(chunksMap)) {
         return Object.keys(chunksMap).reduce(function (obj, name) {
             var chunk = chunksMap[name];
-            if (isStr(chunk)) {
+            if (util_1.isStr(chunk)) {
                 obj[name] = importChunk(chunk.replace('*', name), relativePath);
             }
             else {
@@ -26,7 +26,7 @@ function useChunks(importChunk, chunksMap, relativePath) {
         }, {});
     }
     return useChunks(importChunk, chunksMap.reduce(function (obj, name) {
-        if (isStr(name)) {
+        if (util_1.isStr(name)) {
             obj[name.replace(/[^\w\d-_]/gi, '-')] = name;
             return obj;
         }

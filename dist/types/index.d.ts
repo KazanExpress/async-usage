@@ -1,6 +1,4 @@
-import { chunkImporterFactory } from './chunkFactory';
-import { IChunkPlugin } from './plugins';
-import { ChunkImportMap, ChunkImportPromiseMap, ChunkImportArray, ChunkImportOptions, ImportFactory } from 'types';
+import { ChunkImportMap, ChunkImportPromiseMap, ChunkImportArray, ImportFactory, ChunkImportPromise, IChunkPlugin } from './types';
 export declare type ChunksUse = {
     <M extends ChunkImportMap>(ChunksMap: M): ExtendedChunksMap<keyof M>;
     <M extends ChunkImportMap>(ChunksMap: M): ChunkImportPromiseMap<keyof M>;
@@ -10,10 +8,7 @@ export declare type ChunksUse = {
     (ChunksMap: ChunkImportArray): ChunkImportPromiseMap;
     (ChunksMap: ChunkImportArray, relativePath: string): ExtendedChunksMap;
     (ChunksMap: ChunkImportArray, relativePath: string): ChunkImportPromiseMap;
-};
-export declare type FormattedChunksUse<R> = {
-    (ChunksMap: ChunkImportOptions): R;
-    (ChunksMap: ChunkImportOptions, relativePath: string): R;
+    (path: string, relativePath?: string): ChunkImportPromise;
 };
 export declare type ExtendedChunksMap<Keys extends PropertyKey = string> = ChunkImportPromiseMap<Keys> & {
     [alias in 'and' | 'with']: ChunksUse;
@@ -25,5 +20,5 @@ export interface IAsyncUsageOptions {
     plugins?: IChunkPlugin[];
 }
 export declare function createAsyncUsage(importFactory: ImportFactory, options?: IAsyncUsageOptions | string): ChunksUse;
-export { chunkImporterFactory as generateChunkImporter };
-export { IChunkPlugin, ProfilePlugin, cachePlugin } from './plugins';
+export { ProfilePlugin, cachePlugin } from './plugins';
+export { IChunkPlugin } from './types';

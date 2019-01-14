@@ -13,15 +13,17 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var useChunks_1 = require("./useChunks");
 var chunkFactory_1 = require("./chunkFactory");
-exports.generateChunkImporter = chunkFactory_1.chunkImporterFactory;
-var plugins_1 = require("./plugins");
+var util_1 = require("./util");
 function createAsyncUsage(importFactory, options) {
     if (options === void 0) { options = ''; }
-    var _a = plugins_1.isStr(options) ? { basePath: options, plugins: [] } : options, basePath = _a.basePath, plugins = _a.plugins;
+    var _a = util_1.isStr(options) ? { basePath: options } : options, _b = _a.basePath, basePath = _b === void 0 ? '' : _b, _c = _a.plugins, plugins = _c === void 0 ? [] : _c;
     var cif = chunkFactory_1.chunkImporterFactory(importFactory, basePath, plugins);
     function use(chunkMap, relativePath) {
+        if (util_1.isStr(chunkMap)) {
+            return cif(chunkMap, relativePath);
+        }
         var chunks = useChunks_1.useChunks(cif, chunkMap, relativePath);
-        var factory = function (cm, rp) { return (__assign({}, chunks, use(cm, rp))); };
+        var factory = (function (cm, rp) { return (__assign({}, chunks, use(cm, rp))); });
         var aliased = {
             and: factory,
             with: factory,
@@ -29,13 +31,10 @@ function createAsyncUsage(importFactory, options) {
         };
         return __assign({}, aliased, chunks);
     }
-    use.formatted = function format(formatter) {
-        return function (cm, rp) { return formatter(use(cm, rp)); };
-    };
     return use;
 }
 exports.createAsyncUsage = createAsyncUsage;
-var plugins_2 = require("./plugins");
-exports.ProfilePlugin = plugins_2.ProfilePlugin;
-exports.cachePlugin = plugins_2.cachePlugin;
+var plugins_1 = require("./plugins");
+exports.ProfilePlugin = plugins_1.ProfilePlugin;
+exports.cachePlugin = plugins_1.cachePlugin;
 //# sourceMappingURL=index.js.map

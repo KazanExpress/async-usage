@@ -1,4 +1,4 @@
-const isStr = (n) => typeof n == 'string';
+import { isStr } from './util';
 export function useChunks(importChunk, chunksMap, relativePath) {
     if (!Array.isArray(chunksMap)) {
         return Object.keys(chunksMap).reduce((obj, name) => {

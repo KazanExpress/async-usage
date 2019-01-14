@@ -1,8 +1,7 @@
-import { IChunkPlugin } from '..';
-import { Chunk } from 'types';
-export declare const isStr: (n: any) => n is string;
+import { Chunk, IChunkPlugin } from '../../types';
 export declare class ProfilePlugin implements IChunkPlugin {
     private logStyle;
+    readonly name: string;
     private loads;
     private maybeReturnPrevChunk;
     constructor(basePath: string, logStyle: string | boolean);

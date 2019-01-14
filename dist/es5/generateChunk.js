@@ -1,47 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var invokePlugins = function (methods, args, initial) { return methods.reduce(function (res, plugin) {
-    if (plugin) {
-        return plugin.apply(void 0, args.concat([res])) || res;
-    }
-    else {
-        return res;
-    }
-}, initial); };
+var plugins_1 = require("./plugins");
 var isDef = function (v) { return typeof v !== 'undefined'; };
 function chunkGeneratorFactory(importFactory, plugins) {
-    var pluginsMap = plugins.reduce(function (acc, pl) {
-        for (var key in acc) {
-            var plFunc = pl[key];
-            if (typeof plFunc === 'function') {
-                acc[key].push(plFunc.bind(pl));
-            }
-        }
-        return acc;
-    }, {
-        invoked: [],
-        beforeStart: [],
-        started: [],
-        rejected: [],
-        resolved: []
-    });
+    var pluginsMap = plugins_1.mapPlugins(plugins);
+    var invoke = plugins_1.invokePlugins(pluginsMap.name);
     return function generateChunk(name) {
         return function generate(path) {
-            var invokedResult = invokePlugins(pluginsMap.invoked, [path, name], undefined);
+            var invokedResult = invoke(pluginsMap.invoked, [path, name], undefined);
             return isDef(invokedResult) ? function () { return invokedResult; } : function () {
-                var beforeStartResult = invokePlugins(pluginsMap.beforeStart, [path, name], undefined);
+                var beforeStartResult = invoke(pluginsMap.beforeStart, [path, name], undefined);
                 if (isDef(beforeStartResult)) {
-                    return Promise.resolve(beforeStartResult);
+                    return beforeStartResult;
                 }
                 var promise = importFactory(path);
-                var startedResult = invokePlugins(pluginsMap.started, [path, name, promise], undefined);
+                var startedResult = invoke(pluginsMap.started, [path, name, promise], undefined);
                 if (isDef(startedResult)) {
-                    return Promise.resolve(startedResult);
+                    return startedResult;
                 }
                 return promise.then(function (chunk) {
-                    return invokePlugins(pluginsMap.resolved, [path, name, chunk], chunk);
+                    return invoke(pluginsMap.resolved, [path, name, chunk], chunk);
                 }).catch(function (e) {
-                    var rejectedRes = invokePlugins(pluginsMap.rejected, [path, name, e], undefined);
+                    var rejectedRes = invoke(pluginsMap.rejected, [path, name, e], undefined);
                     if (isDef(rejectedRes)) {
                         return rejectedRes;
                     }

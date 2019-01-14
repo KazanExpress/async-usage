@@ -1,4 +1,4 @@
-const cache = {};
+export const cache = {};
 const cacheChunk = (path, _name, prevChunk) => {
     if (prevChunk) {
         return prevChunk;
@@ -13,6 +13,7 @@ const started = (path, _name, chunkPromise) => {
     return undefined;
 };
 export const cachePlugin = {
+    name: 'cache',
     invoked: cacheChunk,
     beforeStart: cacheChunk,
     started

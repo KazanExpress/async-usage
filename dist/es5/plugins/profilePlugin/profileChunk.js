@@ -4,6 +4,7 @@ var timed = function (time) {
     var digitsTillSeconds = 3;
     var strTime;
     var suffix;
+    /* istanbul ignore if */
     if (time.length > digitsTillSeconds) {
         strTime = time.substr(0, time.length - digitsTillSeconds);
         suffix = ' s ';
