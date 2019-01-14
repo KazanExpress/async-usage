@@ -17,7 +17,7 @@
 ## What is it?
 
 This is a simple tool for creating environment specific dynamic import factories with pluginable functionality.
-It tool allows you to create [dynamic import factories](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) to help your project be KISS and DRY. 😉
+It allows you to create [dynamic import factories](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) to help your project be KISS and DRY. 😉
 
 You can use it to reduce code repetition in your project's imports.
 
@@ -27,7 +27,7 @@ Mostly designed to work with [webpack](http://webpackjs.org), but can be easily 
 
 ### General usage
 
-Its simple - just create your specific async chunk use-case:
+It's simple - just create your specific async chunk use-case:
 
 ```ts
 // Import the `createAsyncUsage` function
