@@ -6,6 +6,10 @@ interface ILoads {
   [path: string]: ReturnType<typeof profileChunk>;
 }
 
+/**
+ * Logs chunk-loading statistics into the console
+ *
+ */
 export class ProfilePlugin implements IChunkPlugin {
   public readonly name: string = 'profile';
 
@@ -23,6 +27,19 @@ export class ProfilePlugin implements IChunkPlugin {
     return undefined;
   }
 
+  /**
+   * Creates an instance of ProfilePlugin
+   *
+   * @param basePath - a base URI to prepend to all of your logged chunks.
+   *
+   *  Leave as empty string if none is desireable.
+   *
+   * @param logStyle - a style (in CSS) in which you want your chunk names to be logged.
+   *
+   *  Recommeneded to pass like `color:${yourColorHere}`.
+   *
+   *  Pass `false` to disable the plugin.
+   */
   constructor(basePath: string, private logStyle: string | boolean) {
     if (isStr(logStyle) && logStyle) {
       console.log(basePath + ' will be highlighted on load with %c' + logStyle, logStyle);
