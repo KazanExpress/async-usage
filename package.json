@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "keywords": [
     "async",
+    "dynamic",
     "import",
+    "ESNext",
     "component",
     "flexible",
     "Webpack",
