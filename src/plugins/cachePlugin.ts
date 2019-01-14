@@ -1,5 +1,4 @@
-import { IBeforeStartedHook, IChunkPlugin, IStartedHook } from '.';
-import { Chunk } from '../types';
+import { Chunk, IBeforeStartedHook, IStartedHook, IChunkPlugin } from '../types';
 
 export const cache: {
   [path: string]: Promise<Chunk>;

@@ -1,6 +1,5 @@
 import { chunkGeneratorFactory } from './generateChunk';
-import { IChunkPlugin } from './plugins';
-import { ChunkImporter, ImportFactory } from './types';
+import { ChunkImporter, ImportFactory, IChunkPlugin } from './types';
 
 export function chunkImporterFactory(
   importFactory: ImportFactory,

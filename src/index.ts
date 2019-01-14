@@ -1,7 +1,6 @@
 import { useChunks } from './useChunks';
 import { chunkImporterFactory } from './chunkFactory';
-import { IChunkPlugin } from './plugins';
-import { ChunkImportMap, ChunkImportPromiseMap, ChunkImportArray, ChunkImportOptions, ImportFactory, ChunkImportPromise } from './types';
+import { ChunkImportMap, ChunkImportPromiseMap, ChunkImportArray, ChunkImportOptions, ImportFactory, ChunkImportPromise, IChunkPlugin } from './types';
 import { isStr } from './util';
 
 export type ChunksUse = {
@@ -73,7 +72,10 @@ export function createAsyncUsage(
 }
 
 export {
-  IChunkPlugin,
   ProfilePlugin,
   cachePlugin
 } from './plugins';
+
+export {
+  IChunkPlugin
+} from './types';

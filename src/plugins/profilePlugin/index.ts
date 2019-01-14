@@ -1,6 +1,5 @@
 import { profileChunk } from './profileChunk';
-import { IChunkPlugin } from '..';
-import { Chunk } from '../../types';
+import { Chunk, IChunkPlugin } from '../../types';
 import { isStr } from '../../util';
 
 interface ILoads {

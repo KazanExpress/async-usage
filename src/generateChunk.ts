@@ -1,5 +1,5 @@
-import { Chunk } from './types';
-import { IChunkPlugin, invokePlugins, mapPlugins } from './plugins';
+import { Chunk, IChunkPlugin } from './types';
+import { invokePlugins, mapPlugins } from './plugins';
 
 const isDef = (v: any): v is Chunk | Promise<Chunk> => typeof v !== 'undefined';
 
