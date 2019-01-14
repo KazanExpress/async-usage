@@ -16,15 +16,16 @@
 
 ## What is it?
 
-It's a simple tool for creating environment specific dynamic import factories with pluginable functionality.
+This is a simple tool for creating environment specific dynamic import factories with pluginable functionality.
+It tool allows you to create [dynamic import factories](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) to help your project be KISS and DRY. 😉
 
 You can use it to reduce code repetition in your project's imports.
 
+Mostly designed to work with [webpack](http://webpackjs.org), but can be easily tuned to work with other bundlers or even native browser dynamic imports.
+
 ## TLDR
 
-This tool allows you to create [dynamic import factories](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) to help your project be KISS and DRY. 😉
-
-Mostly designed to work with [webpack](http://webpackjs.org), but can be easily tuned to work with other bundlers or even native browser dynamic imports.
+### General usage
 
 Its simple - just create your specific async chunk use-case:
 
@@ -102,4 +103,74 @@ components === {
 }
 ```
 
-## API
+### Plugins
+
+It's possible to create custom plugins for `createAsyncUsage`. For a more comprehensive guide see [API/plugins](#api-plugins).
+
+`createAsyncUsage` already comes with two default plugins you can use: [`cachePlugin`](#cache-plugin) and [`ProfilePlugin`](#profile-plugin)
+
+Shortly, the general format for plugins is the following:
+```ts
+type Plugin = {
+  // Called when the usage was just initiated, returning a factory function
+  invoked: (path: string, name: string, previousChunk: Promise<Chunk> | undefined) => Promise<Chunk> | undefined;
+  
+  // Called right before the `import` function is called
+  beforeStart: (path: string, name: string, previousChunk: Promise<Chunk> | undefined) => Promise<Chunk> | undefined;
+
+  // Called right after the `import` function is called
+  started: (path: string, name: string, newChunk: Promise<Chunk>) => Promise<Chunk> | undefined;
+
+  // Triggered upon successful chunk loading
+  resolved: (path: string, name: string, result: Chunk) => Promise<Chunk> | Chunk | undefined;
+
+  // Triggered if there was an error loading a chunk
+  rejected: (path: string, name: string, reason) => Promise<Chunk> | Chunk | undefined;
+}
+```
+
+Any value returned from those functions that is different from `undefined` will be treated as a loading result and returned instead of the the original result. If you want to simply let `async-usage` do its thing - simply return `undefined` from plugin's function.
+
+#### Cache Plugin
+
+This plugin simply caches your chunks in-memory, bypassing the browser request cache.
+
+Useful in case of having a 'no-cache' flag for some assets, while also having a need to conditionally cache some modules.
+
+Usage:
+```ts
+import { cachePlugin } from 'async-usage';
+
+const use = createAsyncUsage(/* import factory here */, {
+  basePath: 'assets',
+  plugins: [
+    cachePlugin
+  ]
+});
+```
+
+#### Profile Plugin
+
+Logs chunk-loading statistics into the console in a following format:
+```
+ ┌─ Loading time from chunk being requested to a fully loaded chunk
+ │             ┌─ Status of loading the chunk - Loaded | Error | Cached (loaded from cache by cachePlugin)
+ │       ┌─────┴─────┐
+250 ms ┬ Chunk loaded: footer-sama  ────── Name of the chunk (ususally, the key in a chunk-path map)
+       └─ components/footer-sama
+          └─────────┬──────────┘
+                    └─ Path to the chunk
+                       (relative to the base path set in your custom import factory)
+```
+
+Usage:
+```ts
+import { ProfilePlugin } from 'async-usage';
+
+const use = createAsyncUsage(/* import factory here */, {
+  basePath: 'assets',
+  plugins: [
+    new ProfilePlugin('src/assets', 'color: red')
+  ]
+});
+```
