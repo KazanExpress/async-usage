@@ -1,6 +1,23 @@
 import { profileChunk } from './profileChunk';
 import { isStr } from '../../util';
+/**
+ * Logs chunk-loading statistics into the console
+ *
+ */
 export class ProfilePlugin {
+    /**
+     * Creates an instance of ProfilePlugin
+     *
+     * @param basePath - a base URI to prepend to all of your logged chunks.
+     *
+     *  Leave as empty string if none is desireable.
+     *
+     * @param logStyle - a style (in CSS) in which you want your chunk names to be logged.
+     *
+     *  Recommeneded to pass like `color:${yourColorHere}`.
+     *
+     *  Pass `false` to disable the plugin.
+     */
     constructor(basePath, logStyle) {
         this.logStyle = logStyle;
         this.name = 'profile';

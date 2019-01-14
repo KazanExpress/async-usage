@@ -2,7 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var profileChunk_1 = require("./profileChunk");
 var util_1 = require("../../util");
+/**
+ * Logs chunk-loading statistics into the console
+ *
+ */
 var ProfilePlugin = /** @class */ (function () {
+    /**
+     * Creates an instance of ProfilePlugin
+     *
+     * @param basePath - a base URI to prepend to all of your logged chunks.
+     *
+     *  Leave as empty string if none is desireable.
+     *
+     * @param logStyle - a style (in CSS) in which you want your chunk names to be logged.
+     *
+     *  Recommeneded to pass like `color:${yourColorHere}`.
+     *
+     *  Pass `false` to disable the plugin.
+     */
     function ProfilePlugin(basePath, logStyle) {
         this.logStyle = logStyle;
         this.name = 'profile';
