@@ -1,11 +1,5 @@
 <h1 align="center">
-  <div id="logo" style="width:500px;height:85px;margin:10px auto">
-    <div style="width:470;height:65px;margin:0 auto;text-aligh:center;background:#242424;border-radius:8px;box-shadow:0 1px 10px black;">
-      <div style="margin:0 auto;text-aligh:center;padding:14px;font-family:Consolas,monospace;font-size:28px">
-        () <span style="color:#66D9EF">=></span> <span style="color:#F92672">import</span>(<span style="color:#FFEE99">'async-usage'</span>)
-      </div>
-    </div>
-  </div>
+  <img src="logo/async-usage.png">
 </h1>
 
 <p align="center">
