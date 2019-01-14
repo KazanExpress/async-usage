@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="85">
+  <style>
+    .text {
+      font-size: 28px;
+      font-family: Consolas, monospace;
+    }
+  </style>
+
 	<defs>
 		<image id="img_0" width="488" height="83" xlink:href="data:image/png;base64,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"/>
 	</defs>
@@ -25,7 +32,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_2)">
-		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="27.173828" y="28.93457">
+		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" class="text" x="27.173828" y="28.93457">
 				()
 		</text>
 	</g>
@@ -35,8 +42,8 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_3)">
-		<text fill="rgb(248,200,34)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="57.962891" y="28.93457">
-				
+		<text fill="rgb(248,200,34)" stroke="none" transform="translate(15 20.5)" class="text" x="57.962891" y="28.93457">
+
 		</text>
 	</g>
 	<defs>
@@ -45,8 +52,8 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_4)">
-		<text fill="rgb(102,217,239)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="73.357422" y="28.93457">
-				=&gt; 
+		<text fill="rgb(102,217,239)" stroke="none" transform="translate(15 20.5)" class="text" x="73.357422" y="28.93457">
+				=&gt;
 		</text>
 	</g>
 	<defs>
@@ -55,7 +62,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_5)">
-		<text fill="rgb(249,38,114)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="119.54102" y="28.93457">
+		<text fill="rgb(249,38,114)" stroke="none" transform="translate(15 20.5)" class="text" x="119.54102" y="28.93457">
 				import
 		</text>
 	</g>
@@ -65,7 +72,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_6)">
-		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="211.9082" y="28.93457">
+		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" class="text" x="211.9082" y="28.93457">
 				(
 		</text>
 	</g>
@@ -75,7 +82,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_7)">
-		<text fill="rgb(255,238,153)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="227.30273" y="28.93457">
+		<text fill="rgb(255,238,153)" stroke="none" transform="translate(15 20.5)" class="text" x="227.30273" y="28.93457">
 				&apos;async-usage&apos;
 		</text>
 	</g>
@@ -85,7 +92,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_8)">
-		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="427.43164" y="28.93457">
+		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" class="text" x="427.43164" y="28.93457">
 				)
 		</text>
 	</g>
@@ -115,7 +122,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_11)">
-		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="27.173828" y="28.93457">
+		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" class="text" x="27.173828" y="28.93457">
 				()
 		</text>
 	</g>
@@ -125,8 +132,8 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_12)">
-		<text fill="rgb(248,200,34)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="57.962891" y="28.93457">
-				
+		<text fill="rgb(248,200,34)" stroke="none" transform="translate(15 20.5)" class="text" x="57.962891" y="28.93457">
+
 		</text>
 	</g>
 	<defs>
@@ -135,8 +142,8 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_13)">
-		<text fill="rgb(102,217,239)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="73.357422" y="28.93457">
-				=&gt; 
+		<text fill="rgb(102,217,239)" stroke="none" transform="translate(15 20.5)" class="text" x="73.357422" y="28.93457">
+				=&gt;
 		</text>
 	</g>
 	<defs>
@@ -145,7 +152,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_14)">
-		<text fill="rgb(249,38,114)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="119.54102" y="28.93457">
+		<text fill="rgb(249,38,114)" stroke="none" transform="translate(15 20.5)" class="text" x="119.54102" y="28.93457">
 				import
 		</text>
 	</g>
@@ -155,7 +162,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_15)">
-		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="211.9082" y="28.93457">
+		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" class="text" x="211.9082" y="28.93457">
 				(
 		</text>
 	</g>
@@ -165,7 +172,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_16)">
-		<text fill="rgb(255,238,153)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="227.30273" y="28.93457">
+		<text fill="rgb(255,238,153)" stroke="none" transform="translate(15 20.5)" class="text" x="227.30273" y="28.93457">
 				&apos;async-usage&apos;
 		</text>
 	</g>
@@ -175,7 +182,7 @@
 		</clipPath>
 	</defs>
 	<g clip-path="url(#clip_17)">
-		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" font-size="28" font-family="Consolas" x="427.43164" y="28.93457">
+		<text fill="rgb(197,200,198)" stroke="none" transform="translate(15 20.5)" class="text" x="427.43164" y="28.93457">
 				)
 		</text>
 	</g>
