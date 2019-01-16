@@ -4,10 +4,10 @@ import { ChunkImportMap, ChunkImportPromiseMap, ChunkImportArray, ChunkImportOpt
 import { isStr } from './util';
 
 export type ChunksUse = {
-  <M extends ChunkImportMap>(ChunksMap: M): ExtendedChunksMap<keyof M>;
-  <M extends ChunkImportMap>(ChunksMap: M): ChunkImportPromiseMap<keyof M>;
-  <M extends ChunkImportMap>(ChunksMap: M, relativePath: string): ExtendedChunksMap<keyof M>;
-  <M extends ChunkImportMap>(ChunksMap: M, relativePath: string): ChunkImportPromiseMap<keyof M>;
+  <M extends ChunkImportMap>(ChunksMap: M): ExtendedChunksMap<M>;
+  <M extends ChunkImportMap>(ChunksMap: M): ChunkImportPromiseMap<M>;
+  <M extends ChunkImportMap>(ChunksMap: M, relativePath: string): ExtendedChunksMap<M>;
+  <M extends ChunkImportMap>(ChunksMap: M, relativePath: string): ChunkImportPromiseMap<M>;
   (ChunksMap: ChunkImportArray): ExtendedChunksMap;
   (ChunksMap: ChunkImportArray): ChunkImportPromiseMap;
   (ChunksMap: ChunkImportArray, relativePath: string): ExtendedChunksMap;
@@ -16,10 +16,10 @@ export type ChunksUse = {
   (path: string, relativePath?: string): ChunkImportPromise;
 };
 
-export type ExtendedChunksMap<Keys extends PropertyKey = string> = ChunkImportPromiseMap<Keys> & {
+export type ExtendedChunksMap<Obj extends object = object> = ChunkImportPromiseMap<Obj> & {
   [alias in 'and' | 'with']: ChunksUse;
 } & {
-  clean(): ChunkImportPromiseMap<Keys>;
+  clean(): ChunkImportPromiseMap<Obj>;
 };
 
 export interface IAsyncUsageOptions {
