@@ -1,6 +1,5 @@
-export type Chunk =  {
+export type Chunk = {
   [key: string]: any;
-  default?: any;
 };
 
 export type ImportFactory = (path: string) => Promise<Chunk>;
@@ -13,8 +12,10 @@ export type ChunkMapImporter = (map: ChunkImportMap, relativePathFromRoot?: stri
 export type ChunkImportArray = Array<string | ChunkImportMap>;
 export type ChunkImportOptions = ChunkImportArray | ChunkImportMap;
 
-export type ChunkImportPromiseMap<Keys extends PropertyKey = string> = {
-  [name in Keys]: ChunkImportPromise;
+export type ChunkImportPromiseMap<Obj extends object = object> = {
+  [key: string]: ChunkImportPromise | object;
+} & {
+  [name in keyof Obj]: Obj[name] extends object ? Obj[name] : ChunkImportPromise;
 };
 
 export interface IChunkPlugin {
