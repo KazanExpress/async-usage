@@ -1,4 +1,4 @@
-import { profileChunk } from './profileChunk';
+import { profileChunk } from './profile-chunk';
 import { Chunk, IChunkPlugin } from '../../types';
 import { isStr } from '../../util';
 
@@ -10,7 +10,7 @@ interface ILoads {
  * Logs chunk-loading statistics into the console
  *
  */
-export class ProfilePlugin implements IChunkPlugin {
+export class ProfilePlugin implements IChunkPlugin<any> {
   public readonly name: string = 'profile';
 
   private loads: ILoads = {};
