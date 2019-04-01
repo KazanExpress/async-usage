@@ -1,53 +1,68 @@
-export type Chunk = {
+export type Chunk = /* {
   [key: string]: any;
-};
+} */ any;
 
-export type ImportFactory = (path: string) => Promise<Chunk>;
+export type ImportFactory<C extends Chunk> = (path: string) => Promise<C> | C;
+export type ImportFunction<C extends Chunk> = () => Promise<C>;
 
-export type ChunkImporter = (path: string, relativePathFromRoot?: string) => ChunkImportPromise;
+export type ChunkImporter<C extends Chunk> = (path: string, relativePathFromRoot?: string) => ImportFunction<C>;
 
-export type ChunkImportPromise = () => Promise<Chunk>;
-export type ChunkImportMap = { [name: string]: string | object | ChunkImportPromise };
-export type ChunkMapImporter = (map: ChunkImportMap, relativePathFromRoot?: string) => ChunkImportPromiseMap;
+export type ChunkImportMap = { [name: string]: string | object | ImportFunction<any> };
 export type ChunkImportArray = Array<string | ChunkImportMap>;
-export type ChunkImportOptions = ChunkImportArray | ChunkImportMap;
-
-export type ChunkImportPromiseMap<Obj extends object = object> = {
-  [key: string]: ChunkImportPromise | object;
-} & {
-  [name in keyof Obj]: Obj[name] extends object ? Obj[name] : ChunkImportPromise;
+export type ChunkImportOptions = ChunkImportMap | ChunkImportArray;
+export type ChunkPromiseMap<C extends Chunk> = {
+  [key: string]: ImportFunction<C> | object;
 };
 
-export interface IChunkPlugin {
+export type ChunksUse<C extends Chunk> = {
+  (ChunksMap: ChunkImportMap): ExtendedChunksMap<C>;
+  (ChunksMap: ChunkImportMap): ChunkPromiseMap<C>;
+  (ChunksMap: ChunkImportMap, relativePath: string): ExtendedChunksMap<C>;
+  (ChunksMap: ChunkImportMap, relativePath: string): ChunkPromiseMap<C>;
+  (ChunksMap: ChunkImportArray): ExtendedChunksMap<C>;
+  (ChunksMap: ChunkImportArray): ChunkPromiseMap<C>;
+  (ChunksMap: ChunkImportArray, relativePath: string): ExtendedChunksMap<C>;
+  (ChunksMap: ChunkImportArray, relativePath: string): ChunkPromiseMap<C>;
+
+  (path: string, relativePath?: string): ImportFunction<C>;
+};
+
+export type ExtendedChunksMap<C extends Chunk> = ChunkPromiseMap<C> & {
+  [alias in 'and' | 'with']: ChunksUse<C>;
+} & {
+  clean(): ChunkPromiseMap<C>;
+};
+
+
+export interface IChunkPlugin<RT extends Chunk> {
   name: string;
 
-  invoked?: IBeforeStartedHook;
-  beforeStart?: IBeforeStartedHook;
-  started?: IStartedHook;
-  resolved?: IResolvedHook;
-  rejected?: IRejectedHook;
+  invoked?: IBeforeStartedHook<RT>;
+  beforeStart?: IBeforeStartedHook<RT>;
+  started?: IStartedHook<RT>;
+  resolved?: IResolvedHook<RT>;
+  rejected?: IRejectedHook<RT>;
 }
 
+export type PluginFunction<RT extends Chunk> = (...args: any[]) => RT | Promise<RT> | undefined;
 
-export type PluginFunction = (...args: any[]) => Chunk | Promise<Chunk> | undefined;
+export type IBeforeStartedHook<RT extends Chunk> = (path: string, name: string, prevChunk?: Promise<RT>) => Promise<RT> | RT | undefined;
+export type IStartedHook<RT extends Chunk> = (path: string, name: string, newChunk: Promise<RT> | RT) => Promise<RT> | RT | undefined;
+export type IResolvedHook<RT extends Chunk> = (path: string, name: string, value: RT) => RT | Promise<RT>;
+export type IRejectedHook<RT extends Chunk> = (path: string, name: string, reason: any) => RT | Promise<RT> | undefined;
 
-export type IBeforeStartedHook = (path: string, name: string, prevChunk?: Promise<Chunk>) => Promise<Chunk> | undefined;
-export type IStartedHook = (path: string, name: string, newChunk: Promise<Chunk>) => Promise<Chunk> | undefined;
-export type IResolvedHook = (path: string, name: string, value: Chunk) => Chunk | PromiseLike<Chunk>;
-export type IRejectedHook = (path: string, name: string, reason: any) => Chunk | PromiseLike<Chunk> | undefined;
-
-export type PluginFunctionCollection = {
+export type PluginFunctionCollection<RT extends Chunk> = {
   name: string[];
 } & {
-  [key: string]: PluginFunction[];
+  [key: string]: PluginFunction<RT>[];
 
-  invoked: IBeforeStartedHook[];
-  beforeStart: IBeforeStartedHook[];
-  started: IStartedHook[];
-  resolved: IResolvedHook[];
-  rejected: IRejectedHook[];
+  invoked: IBeforeStartedHook<RT>[];
+  beforeStart: IBeforeStartedHook<RT>[];
+  started: IStartedHook<RT>[];
+  resolved: IResolvedHook<RT>[];
+  rejected: IRejectedHook<RT>[];
 };
 
-export interface IChunkPluginIterable extends IChunkPlugin {
-  [key: string]: PluginFunction | string | undefined;
+export interface IChunkPluginIterable<RT extends Chunk> extends IChunkPlugin<RT> {
+  [key: string]: PluginFunction<RT> | string | undefined;
 }
