@@ -1,5 +1,5 @@
-import { useChunks } from './useChunks';
-import { chunkImporterFactory } from './chunkFactory';
+import { useChunks } from './use-сhunks';
+import { chunkImporterFactory } from './chunk-factory';
 import { ImportFactory, IChunkPlugin, Chunk, ImportFunction, ChunksUse, ChunkImportOptions, ExtendedChunksMap } from './types';
 import { isStr } from './util';
 

@@ -1,8 +1,8 @@
 import { PluginFunction, IChunkPlugin, PluginFunctionCollection, IChunkPluginIterable, Chunk } from '../types';
 import { isStr } from '../util';
 
-export * from './cachePlugin';
-export * from './profilePlugin';
+export * from './cache-plugin';
+export * from './profile-plugin';
 
 export const invokePlugins = (names: Array<string>) => <P extends PluginFunction<Chunk>>(
   methods: Array<P>,

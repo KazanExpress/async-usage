@@ -1,13 +1,13 @@
-import { ChunkImporter, ChunkImportOptions, ChunkImportPromiseMap, ChunkImportMap } from './types';
+import { ChunkImporter, ChunkImportOptions, ChunkPromiseMap, ChunkImportMap, Chunk } from './types';
 import { isStr } from './util';
 
-export function useChunks(
-  importChunk: ChunkImporter,
+export function useChunks<C extends Chunk>(
+  importChunk: ChunkImporter<C>,
   chunksMap: ChunkImportOptions,
   relativePath?: string
-): ChunkImportPromiseMap {
+): ChunkPromiseMap<C> {
   if (!Array.isArray(chunksMap)) {
-    return Object.keys(chunksMap).reduce<ChunkImportPromiseMap>(
+    return Object.keys(chunksMap).reduce<ChunkPromiseMap<C>>(
       (obj, name) => {
         const chunk = chunksMap[name];
 
