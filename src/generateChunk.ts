@@ -3,7 +3,10 @@ import { invokePlugins, mapPlugins } from './plugins';
 
 const isDef = <RT extends Chunk>(v: RT | Promise<RT> | undefined): v is RT | Promise<RT> => typeof v !== 'undefined';
 
-export function chunkGeneratorFactory<ReturnType extends Chunk, I extends ImportFactory<ReturnType> = ImportFactory<ReturnType>>(
+export function chunkGeneratorFactory<
+  I extends ImportFactory<any> = ImportFactory<any>,
+  ReturnType extends Chunk = I extends ImportFactory<infer U> ? U : Chunk
+>(
   importFactory: I,
   plugins: IChunkPlugin<ReturnType>[]
 ) {
