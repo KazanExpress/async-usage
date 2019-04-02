@@ -1,6 +1,6 @@
-import { chunkGeneratorFactory } from '../src/generateChunk';
+import { chunkGeneratorFactory } from '../src/generate-chunk';
 import { importFactory, wrongImportFactory } from './common';
-import { IChunkPlugin } from '../src/plugins';
+import { IChunkPlugin } from '../src/types';
 
 describe('chunkGeneratorFactory', () => {
   it('produces chunk generators', async () => {
@@ -101,5 +101,9 @@ describe('chunkGeneratorFactory', () => {
 
     // tslint:disable-next-line:no-magic-numbers
     expect(beforeStart).toBe(3);
+  });
+
+  it('allows not only promises', () => {
+    // TODO
   });
 });

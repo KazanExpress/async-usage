@@ -4,7 +4,7 @@ export const cache: {
   [path: string]: Promise<Chunk>;
 } = {};
 
-const cacheChunk: IBeforeStartedHook = (path: string, _name: string, prevChunk?: Promise<Chunk>) => {
+const cacheChunk: IBeforeStartedHook<Chunk> = (path: string, _name: string, prevChunk?: Promise<Chunk>) => {
   if (prevChunk) {
     return prevChunk;
   }
@@ -16,13 +16,13 @@ const cacheChunk: IBeforeStartedHook = (path: string, _name: string, prevChunk?:
   return undefined;
 };
 
-const started: IStartedHook = (path: string, _name: string, chunkPromise: Promise<Chunk>) => {
-  cache[path] = chunkPromise;
+const started: IStartedHook<Chunk> = (path: string, _name: string, chunkPromise: Promise<Chunk> | Chunk) => {
+  cache[path] = Promise.resolve(chunkPromise);
 
   return undefined;
 };
 
-export const cachePlugin: IChunkPlugin = {
+export const cachePlugin: IChunkPlugin<Chunk> = {
   name: 'cache',
   invoked: cacheChunk,
   beforeStart: cacheChunk,

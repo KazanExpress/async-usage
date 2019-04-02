@@ -1,10 +1,10 @@
-import { PluginFunction, IChunkPlugin, PluginFunctionCollection, IChunkPluginIterable } from '../types';
+import { PluginFunction, IChunkPlugin, PluginFunctionCollection, IChunkPluginIterable, Chunk } from '../types';
 import { isStr } from '../util';
 
-export * from './cachePlugin';
-export * from './profilePlugin';
+export * from './cache-plugin';
+export * from './profile-plugin';
 
-export const invokePlugins = (names: Array<string>) => <P extends PluginFunction>(
+export const invokePlugins = (names: Array<string>) => <P extends PluginFunction<Chunk>>(
   methods: Array<P>,
   args: Parameters<P>,
   initial: ReturnType<P>
@@ -20,9 +20,9 @@ export const invokePlugins = (names: Array<string>) => <P extends PluginFunction
   }
 }, initial);
 
-export const mapPlugins = (plugins: IChunkPlugin[]) => plugins.reduce<PluginFunctionCollection>((acc, pl) => {
+export const mapPlugins = <RT extends Chunk = Chunk>(plugins: IChunkPlugin<RT>[]) => plugins.reduce<PluginFunctionCollection<RT>>((acc, pl) => {
   for (const key in acc) {
-    const plFunc = (pl as IChunkPluginIterable)[key];
+    const plFunc = (pl as IChunkPluginIterable<RT>)[key];
 
     if (typeof plFunc === 'function') {
       acc[key].push(plFunc.bind(pl));
