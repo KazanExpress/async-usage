@@ -104,6 +104,6 @@ describe('chunkGeneratorFactory', () => {
   });
 
   it('allows not only promises', () => {
-
+    // TODO
   });
 });
