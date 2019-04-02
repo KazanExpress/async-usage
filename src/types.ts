@@ -34,7 +34,7 @@ export type ExtendedChunksMap<C extends Chunk> = ChunkPromiseMap<C> & {
 };
 
 
-export interface IChunkPlugin<RT extends Chunk> {
+export interface IChunkPlugin<RT extends Chunk = any> {
   name: string;
 
   invoked?: IBeforeStartedHook<RT>;
