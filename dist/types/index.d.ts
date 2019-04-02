@@ -1,24 +1,8 @@
-import { ChunkImportMap, ChunkImportPromiseMap, ChunkImportArray, ImportFactory, ChunkImportPromise, IChunkPlugin } from './types';
-export declare type ChunksUse = {
-    <M extends ChunkImportMap>(ChunksMap: M): ExtendedChunksMap<M>;
-    <M extends ChunkImportMap>(ChunksMap: M): ChunkImportPromiseMap<M>;
-    <M extends ChunkImportMap>(ChunksMap: M, relativePath: string): ExtendedChunksMap<M>;
-    <M extends ChunkImportMap>(ChunksMap: M, relativePath: string): ChunkImportPromiseMap<M>;
-    (ChunksMap: ChunkImportArray): ExtendedChunksMap;
-    (ChunksMap: ChunkImportArray): ChunkImportPromiseMap;
-    (ChunksMap: ChunkImportArray, relativePath: string): ExtendedChunksMap;
-    (ChunksMap: ChunkImportArray, relativePath: string): ChunkImportPromiseMap;
-    (path: string, relativePath?: string): ChunkImportPromise;
-};
-export declare type ExtendedChunksMap<Obj extends object = object> = ChunkImportPromiseMap<Obj> & {
-    [alias in 'and' | 'with']: ChunksUse;
-} & {
-    clean(): ChunkImportPromiseMap<Obj>;
-};
-export interface IAsyncUsageOptions {
+import { ImportFactory, IChunkPlugin, Chunk, ChunksUse } from './types';
+export interface IAsyncUsageOptions<C extends Chunk> {
     basePath: string;
-    plugins?: IChunkPlugin[];
+    plugins?: IChunkPlugin<C>[];
 }
-export declare function createAsyncUsage(importFactory: ImportFactory, options?: IAsyncUsageOptions | string): ChunksUse;
+export declare function createAsyncUsage<I extends ImportFactory<any> = ImportFactory<any>, C extends Chunk = I extends ImportFactory<infer U> ? U : any>(importFactory: I, options?: IAsyncUsageOptions<C> | string): ChunksUse<C>;
 export { ProfilePlugin, cachePlugin } from './plugins';
-export { IChunkPlugin } from './types';
+export { IChunkPlugin, IBeforeStartedHook, IRejectedHook, IResolvedHook, IStartedHook } from './types';

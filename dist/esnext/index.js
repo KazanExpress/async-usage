@@ -1,5 +1,5 @@
-import { useChunks } from './useChunks';
-import { chunkImporterFactory } from './chunkFactory';
+import { useChunks } from './use-сhunks';
+import { chunkImporterFactory } from './chunk-factory';
 import { isStr } from './util';
 export function createAsyncUsage(importFactory, options = '') {
     const { basePath = '', plugins = [] } = isStr(options) ? { basePath: options } : options;

@@ -4,8 +4,8 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../util");
-__export(require("./cachePlugin"));
-__export(require("./profilePlugin"));
+__export(require("./cache-plugin"));
+__export(require("./profile-plugin"));
 exports.invokePlugins = function (names) { return function (methods, args, initial) { return methods.reduce(function (res, plugin, idx) {
     if (plugin) {
         try {

@@ -1,6 +1,6 @@
 import { isStr } from '../util';
-export * from './cachePlugin';
-export * from './profilePlugin';
+export * from './cache-plugin';
+export * from './profile-plugin';
 export const invokePlugins = (names) => (methods, args, initial) => methods.reduce((res, plugin, idx) => {
     if (plugin) {
         try {
