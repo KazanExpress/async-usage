@@ -1,4 +1,4 @@
-import { cachePlugin, cache } from '../../src/plugins/cachePlugin';
+import { cachePlugin, cache } from '../../src/plugins/cache-plugin';
 
 describe('cachePlugin', () => {
   const chunk1 = Promise.resolve({ default: 'test' });

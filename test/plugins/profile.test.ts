@@ -1,4 +1,4 @@
-import { ProfilePlugin } from '../../src/plugins/profilePlugin';
+import { ProfilePlugin } from '../../src/plugins/profile-plugin';
 
 
 describe('ProfilePlugin', () => {

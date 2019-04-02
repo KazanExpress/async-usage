@@ -1,4 +1,4 @@
-import { chunkGeneratorFactory } from '../src/generateChunk';
+import { chunkGeneratorFactory } from '../src/generate-chunk';
 import { importFactory, wrongImportFactory } from './common';
 import { IChunkPlugin } from '../src/types';
 
