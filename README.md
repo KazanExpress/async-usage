@@ -105,7 +105,7 @@ components === {
 
 ### Plugins
 
-It's possible to create custom plugins for `createAsyncUsage`. For a more comprehensive guide see [API/plugins](#api-plugins).
+It's possible to create custom plugins for `createAsyncUsage`.<!--  For a more comprehensive guide see [API/plugins](#api-plugins). -->
 
 `createAsyncUsage` already comes with two default plugins you can use: [`cachePlugin`](#cache-plugin) and [`ProfilePlugin`](#profile-plugin)
 
