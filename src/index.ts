@@ -40,18 +40,34 @@ export function createAsyncUsage<
       relativePath
     );
 
-    const factory: ChunksUse<C> = ((cm: ChunkImportOptions, rp?: string) => ({
-      ...chunks,
-      ...use(cm, rp)
-    })) as ChunksUse<C>;
-
-    const aliased = {
-      and: factory,
-      with: factory,
-      clean: () => chunks
+    const factory = function (
+      this: ExtendedChunksMap<C>,
+      cm: ChunkImportOptions,
+      rp?: string
+    ): ExtendedChunksMap<C> {
+      return {
+        ...this,
+        ...use(cm, rp)
+      };
     };
 
-    return { ...aliased, ...chunks } as ExtendedChunksMap<C>;
+    return {
+      ...chunks,
+
+      with: factory,
+      and: factory,
+
+      clean() {
+        const {
+          and: _a,
+          with: _w,
+          clean: _c,
+          ...chunks
+        } = this;
+
+        return chunks;
+      }
+    } as ExtendedChunksMap<C>;
   }
 
   return use as ChunksUse<C>;
