@@ -10,26 +10,37 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var use__hunks_1 = require("./use-\u0441hunks");
 var chunk_factory_1 = require("./chunk-factory");
 var util_1 = require("./util");
 function createAsyncUsage(importFactory, options) {
     if (options === void 0) { options = ''; }
-    var _a = util_1.isStr(options) ? { basePath: options } : options, _b = _a.basePath, basePath = _b === void 0 ? '' : _b, _c = _a.plugins, plugins = _c === void 0 ? [] : _c;
+    var _b = util_1.isStr(options) ? { basePath: options } : options, _d = _b.basePath, basePath = _d === void 0 ? '' : _d, _e = _b.plugins, plugins = _e === void 0 ? [] : _e;
     var cif = chunk_factory_1.chunkImporterFactory(importFactory, basePath, plugins);
     function use(chunkMap, relativePath) {
         if (util_1.isStr(chunkMap)) {
             return cif(chunkMap, relativePath);
         }
         var chunks = use__hunks_1.useChunks(cif, chunkMap, relativePath);
-        var factory = (function (cm, rp) { return (__assign({}, chunks, use(cm, rp))); });
-        var aliased = {
-            and: factory,
-            with: factory,
-            clean: function () { return chunks; }
+        var factory = function (cm, rp) {
+            return __assign({}, this, use(cm, rp));
         };
-        return __assign({}, aliased, chunks);
+        return __assign({}, chunks, { with: factory, and: factory, clean: function () {
+                var _b = this, _a = _b.and, _w = _b.with, _c = _b.clean, chunks = __rest(_b, ["and", "with", "clean"]);
+                return chunks;
+            } });
     }
     return use;
 }

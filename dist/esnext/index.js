@@ -9,16 +9,21 @@ export function createAsyncUsage(importFactory, options = '') {
             return cif(chunkMap, relativePath);
         }
         const chunks = useChunks(cif, chunkMap, relativePath);
-        const factory = ((cm, rp) => ({
-            ...chunks,
-            ...use(cm, rp)
-        }));
-        const aliased = {
-            and: factory,
-            with: factory,
-            clean: () => chunks
+        const factory = function (cm, rp) {
+            return {
+                ...this,
+                ...use(cm, rp)
+            };
         };
-        return { ...aliased, ...chunks };
+        return {
+            ...chunks,
+            with: factory,
+            and: factory,
+            clean() {
+                const { and: _a, with: _w, clean: _c, ...chunks } = this;
+                return chunks;
+            }
+        };
     }
     return use;
 }
