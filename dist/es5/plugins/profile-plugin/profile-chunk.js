@@ -48,7 +48,7 @@ function profileChunk(path, name, logStyle) {
         stop: function (type, e) {
             var endTime = performance.now();
             var loadingTime = startTime === -1 ? 0 : endTime - startTime;
-            logChunk(path, name, logStyle, loadingTime, type, e ? '\n\n' + e.message : '');
+            logChunk(path, name, logStyle, loadingTime, type, e ? '\n\n' + e.message + '\n' + e.stack : '');
         }
     };
 }
