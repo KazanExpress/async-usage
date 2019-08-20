@@ -90,7 +90,7 @@ export function profileChunk(path: string, name: string, logStyle?: string) {
         logStyle,
         loadingTime,
         type,
-        e ? '\n\n' + e.message : ''
+        e ? '\n\n' + e.message + '\n' + e.stack : ''
       );
     }
   };
