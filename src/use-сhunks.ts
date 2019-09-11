@@ -1,6 +1,8 @@
 import { ChunkImporter, ChunkImportOptions, ChunkPromiseMap, ChunkImportMap, Chunk } from './types';
 import { isStr } from './util';
 
+const replaceInvalidSymbols = (str: string) => str.replace(/[^\w-]/gi, '-');
+
 export function useChunks<C extends Chunk>(
   importChunk: ChunkImporter<C>,
   chunksMap: ChunkImportOptions,
@@ -10,11 +12,12 @@ export function useChunks<C extends Chunk>(
     return Object.keys(chunksMap).reduce<ChunkPromiseMap<C>>(
       (obj, name) => {
         const chunk = chunksMap[name];
+        const safeName = replaceInvalidSymbols(name);
 
         if (isStr(chunk)) {
-          obj[name] = importChunk(chunk.replace('*', name), relativePath);
+          obj[safeName] = importChunk(chunk.replace('*', name), relativePath);
         } else {
-          obj[name] = chunk;
+          obj[safeName] = chunk;
         }
 
         return obj;
@@ -25,7 +28,7 @@ export function useChunks<C extends Chunk>(
   return useChunks(importChunk, chunksMap.reduce(
     (obj: ChunkImportMap, name: string | ChunkImportMap) => {
       if (isStr(name)) {
-        obj[name.replace(/[^\w\d-_]/gi, '-')] = name;
+        obj[replaceInvalidSymbols(name)] = name;
 
         return obj;
       } else {
