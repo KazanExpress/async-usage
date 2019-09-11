@@ -1,7 +1,7 @@
 import { ChunkImporter, ChunkImportOptions, ChunkPromiseMap, ChunkImportMap, Chunk } from './types';
 import { isStr } from './util';
 
-const replaceInvalidSymbols = (str: string) => str.replace(/[^\w\d-_]/gi, '-');
+const replaceInvalidSymbols = (str: string) => str.replace(/[^\w-]/gi, '-');
 
 export function useChunks<C extends Chunk>(
   importChunk: ChunkImporter<C>,
