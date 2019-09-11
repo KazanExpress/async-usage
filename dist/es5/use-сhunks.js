@@ -12,22 +12,24 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
+var replaceInvalidSymbols = function (str) { return str.replace(/[^\w-]/gi, '-'); };
 function useChunks(importChunk, chunksMap, relativePath) {
     if (!Array.isArray(chunksMap)) {
         return Object.keys(chunksMap).reduce(function (obj, name) {
             var chunk = chunksMap[name];
+            var safeName = replaceInvalidSymbols(name);
             if (util_1.isStr(chunk)) {
-                obj[name] = importChunk(chunk.replace('*', name), relativePath);
+                obj[safeName] = importChunk(chunk.replace('*', name), relativePath);
             }
             else {
-                obj[name] = chunk;
+                obj[safeName] = chunk;
             }
             return obj;
         }, {});
     }
     return useChunks(importChunk, chunksMap.reduce(function (obj, name) {
         if (util_1.isStr(name)) {
-            obj[name.replace(/[^\w\d-_]/gi, '-')] = name;
+            obj[replaceInvalidSymbols(name)] = name;
             return obj;
         }
         else {
