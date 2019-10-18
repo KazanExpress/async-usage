@@ -1,6 +1,7 @@
 {
   "name": "async-usage",
   "version": "2.1.0",
+  "sideEffects": false,
   "keywords": [
     "async",
     "dynamic",
