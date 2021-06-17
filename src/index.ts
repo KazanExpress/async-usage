@@ -78,10 +78,4 @@ export {
   cachePlugin
 } from './plugins';
 
-export {
-  IChunkPlugin,
-  IBeforeStartedHook,
-  IRejectedHook,
-  IResolvedHook,
-  IStartedHook
-} from './types';
+export * from './types';
