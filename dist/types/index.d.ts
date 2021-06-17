@@ -5,4 +5,4 @@ export interface IAsyncUsageOptions<C extends Chunk> {
 }
 export declare function createAsyncUsage<I extends ImportFactory<any> = ImportFactory<any>, C extends Chunk = I extends ImportFactory<infer U> ? U : any>(importFactory: I, options?: IAsyncUsageOptions<C> | string): ChunksUse<C>;
 export { ProfilePlugin, cachePlugin } from './plugins';
-export { IChunkPlugin, IBeforeStartedHook, IRejectedHook, IResolvedHook, IStartedHook } from './types';
+export * from './types';
